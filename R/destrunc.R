@@ -7,16 +7,21 @@
 #'@param hi maximum possible value
 #'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.
 #'@param ... other arguments
-#'@example
-#'desTrunc()
-require(ggplot2)
-require(truncnorm)
+#'@import ggplot2
+#'@import truncnorm
+#'@examples
+#'data("metadat")
+#'destrunc(vmean=dat$m2[6], vsd=dat$sd2[6],
+#'hi = dat$p.max[6],showFigure = T)
+#'@seealso \code{\link{desbeta}}
 destrunc <- function(vmean,
                       vsd,
                       lo = 0,
                       hi,
                       showFigure = FALSE,
                       ...){
+  require(ggplot2)
+  require(truncnorm)
   model <- function(x){
     f <- numeric(2)
     lower.std = (lo - x[1])/x[2]

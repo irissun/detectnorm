@@ -2,7 +2,7 @@ Package: detectnorm
 Type: Package
 Title: Detect the nonnormality in primary studies in meta-analysis
 Version: 0.1.0
-Author: Rongwei SUN, Shu Fai CHEUNG
+Author@R: person("Rongwei", "Sun", email = "irissun_s@hotmail.com", role = c("aut", "cre"))
 Maintainer: Rongwei Sun <irissun_s@hotmail.com>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
@@ -11,8 +11,7 @@ Encoding: UTF-8
 LazyData: true
 Imports:
   nleqslv,
-  ggplot2,
-  truncnorm
+  ggplot2
 Suggests:
   metafor
   

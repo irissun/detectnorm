@@ -1,10 +1,20 @@
 #' Calculate skewness and kurtosis based on truncated normal distribution in a meta-analysis for SMD
 #'
 #'This function can be used to calculate the skewness and kurtosis based on the truncated normal distribution with the dataset used to conduct meta-analysis. Also, it can be used to estimate the mean and variance of the parent distribution (the distribution before truncated).
-#'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.
+#'@param m1i vector to the means of first group
+#'@param sd1i vector to specifiy the standard deviation of first group
+#'@param n1i vector to specify the sample size of first group
+#'@param lo1i vector to specify the possible minimum of the first group
+#'@param hi1i vector to specify the possible maximum of the first group
+#'@param m2i vector to the means of second group
+#'@param sd2i vector to specifiy the standard deviation of second group
+#'@param n2i vector to specify the sample size of second group
+#'@param lo2i vector to specify the possible minimum of the second group
+#'@param hi2i vector to specify the possible maximum of the second group
+#'@param showFigure when showFigure = TRUE, it will display all the plots (within the result as a list, result$fig) with theoretical normal curve and the truncated normal curve.
 #'@param ... other arguments
 #'@example
-#'des2trunc()
+
 des2trunc <- function(m1i,sd1i,n1i,lo1i,hi1i,
                      m2i, sd2i, n2i, lo2i, hi2i, data,
                      showFigure = FALSE,

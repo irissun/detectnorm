@@ -8,7 +8,7 @@
 #'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.
 #'@param ... other arguments
 #'@example
-#'desTrunc()
+
 require(ggplot2)
 require(truncnorm)
 destrunc <- function(vmean,

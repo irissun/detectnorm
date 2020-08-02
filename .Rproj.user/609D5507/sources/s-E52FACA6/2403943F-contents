@@ -3,6 +3,8 @@ load("exmaple.Robj")
 head(dat)
 result <- destrunc(vmean=dat$m2[6], vsd=dat$sd2[6], hi = dat$p.max[6],
                    showFigure = T)
+desbeta(vmean=dat$m2[6], vsd=dat$sd2[6], hi = dat$p.max[6],
+         showFigure = T)
 
 lo <- 0
 hi <- dat$p.max[2]
@@ -21,7 +23,19 @@ ex <- des2trunc( m1i = m1,
            lo2i=0,
            data = dat)
 
-ex2 <- des2trunc( m1i  = m1,
+ex <- des2beta(m1i = m1,
+                 sd1i = sd1,
+                 n1i = n1,
+                 hi1i = p.max,
+                 lo1i = 0,
+                 m2i = m2,
+                 sd2i = sd2,
+                 n2i = n2, 
+                 hi2i = p.max,
+                 lo2i=0,
+                 data = dat)
+
+ex2 <- des2beta( m1i  = m1,
                  sd1i = sd1,
                  n1i = n1,
                  hi1i = p.max,

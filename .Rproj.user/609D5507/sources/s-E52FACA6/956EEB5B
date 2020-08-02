@@ -7,18 +7,18 @@
     "folds" : "",
     "hash" : "0",
     "id" : "956EEB5B",
-    "lastKnownWriteTime" : 1596081457,
-    "last_content_update" : 1596081457,
+    "lastKnownWriteTime" : 1596374298,
+    "last_content_update" : 1596374298709,
     "path" : "~/Google Drive/detectnorm/R/des2beta.R",
     "project_path" : "R/des2beta.R",
     "properties" : {
-        "cursorPosition" : "26,5",
-        "scrollLine" : "0"
+        "cursorPosition" : "17,16",
+        "scrollLine" : "8"
     },
     "read_only" : false,
     "read_only_alternatives" : [
     ],
-    "relative_order" : 8,
+    "relative_order" : 1,
     "source_on_save" : false,
     "source_window" : "",
     "type" : "r_source"
