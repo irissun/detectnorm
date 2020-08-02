@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1596103415873.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "956EEB5B",
+    "lastKnownWriteTime" : 1596081457,
+    "last_content_update" : 1596081457,
+    "path" : "~/Google Drive/detectnorm/R/des2beta.R",
+    "project_path" : "R/des2beta.R",
+    "properties" : {
+        "cursorPosition" : "26,5",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

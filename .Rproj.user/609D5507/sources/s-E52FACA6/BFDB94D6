@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1596102283068.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "BFDB94D6",
+    "lastKnownWriteTime" : 1596263123,
+    "last_content_update" : 1596263123775,
+    "path" : "~/Google Drive/detectnorm/R/des2trunc.R",
+    "project_path" : "R/des2trunc.R",
+    "properties" : {
+        "cursorPosition" : "54,65",
+        "scrollLine" : "42"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

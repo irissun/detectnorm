@@ -1,0 +1,11 @@
+g1 <- data.frame(t(mapply(destrunc, vmean = m1i,
+                          vsd = sd1i, hi = hi1i,
+                          lo = lo1i,
+                          simplify = TRUE)))
+colnames(g1) <- paste(colnames(g1),1, sep="")
+g2 <- data.frame(t(mapply(destrunc, vmean = m2i,
+                          vsd = sd2i, hi = hi2i,
+                          lo = lo2i,
+                          simplify = TRUE)))
+colnames(g2) <- paste(colnames(g2),2, sep="")
+dat <- data.frame(dat, g1, g2)

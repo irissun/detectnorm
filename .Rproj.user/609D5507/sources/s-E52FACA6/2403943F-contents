@@ -1,0 +1,45 @@
+setwd("~/Google Drive/PhD/dat_sim1")
+load("exmaple.Robj")
+head(dat)
+result <- destrunc(vmean=dat$m2[6], vsd=dat$sd2[6], hi = dat$p.max[6],
+                   showFigure = T)
+
+lo <- 0
+hi <- dat$p.max[2]
+
+result <- destrunc(vmean=1, vsd=2, hi = 5)
+
+ex <- des2trunc( m1i = m1,
+           sd1i = sd1,
+           n1i = n1,
+           hi1i = p.max,
+           lo1i = 0,
+           m2i = m2,
+           sd2i = sd2,
+           n2i = n2, 
+           hi2i = p.max,
+           lo2i=0,
+           data = dat)
+
+ex2 <- des2trunc( m1i  = m1,
+                 sd1i = sd1,
+                 n1i = n1,
+                 hi1i = p.max,
+                 lo1i = 0,
+                 m2i = m2,
+                 sd2i = sd2,
+                 n2i = n2, 
+                 hi2i = p.max,
+                 lo2i=0,
+                 data = dat, showFigure = TRUE)
+
+ ex2 <- des2trunc( m1i = dat$m1,
+                 sd1i = dat$sd1,
+                 n1i = dat$n1,
+                 hi1i = dat$p.max,
+                 lo1i = 0,
+                 m2i = dat$m2,
+                 sd2i = dat$sd2,
+                 n2i = dat$n2, 
+                 hi2i = dat$p.max,
+                 lo2i=0)
