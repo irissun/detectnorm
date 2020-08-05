@@ -11,9 +11,10 @@
 #'@import truncnorm
 #'@examples
 #'data("metadat")
-#'destrunc(vmean=dat$m2[6], vsd=dat$sd2[6],
-#'hi = dat$p.max[6],showFigure = T)
+#'destrunc(vmean = metadat$m2[6], vsd = metadat$sd2[6],
+#'         hi = metadat$p.max[6], showFigure = T)
 #'@seealso \code{\link{desbeta}}
+#'@export
 destrunc <- function(vmean,
                       vsd,
                       lo = 0,
