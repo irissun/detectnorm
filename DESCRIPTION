@@ -14,5 +14,6 @@ Imports:
     ggplot2,
     truncnorm
 Suggests:
-  metafor
+    metafor,
+    testthat
 RoxygenNote: 7.1.1
