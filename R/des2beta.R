@@ -16,6 +16,7 @@
 #'@examples
 #'data("metadat")
 #'ex <- des2beta( m1i = m1,sd1i = sd1,n1i = n1,hi1i = p.max,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2, hi2i = p.max,lo2i=0,data = metadat)
+#'@export
 des2beta <- function(m1i,sd1i,n1i,lo1i,hi1i,
                       m2i, sd2i, n2i, lo2i, hi2i, data,
                       showFigure = FALSE,
@@ -72,7 +73,7 @@ des2beta <- function(m1i,sd1i,n1i,lo1i,hi1i,
         colnames(finalre2) <- paste(colnames(finalre2),2, sep="")
         finalre <- cbind(finalre1, finalre2)
         fig <- list(fig1, fig2)
-        dat <- data.frame(dat, finalre)
+        dat <- data.frame(data, finalre) # SF: Should it be (data.finalre)?
         dat <- list(dat = dat, fig = fig)
     } else {
         for (i in 1:nrow(data)){
@@ -86,7 +87,7 @@ des2beta <- function(m1i,sd1i,n1i,lo1i,hi1i,
         finalre2 <- do.call(rbind,finalre2)
         colnames(finalre2) <- paste(colnames(finalre2),2, sep="")
         finalre <- cbind(finalre1, finalre2)
-        dat <- data.frame(dat, finalre)
+        dat <- data.frame(data, finalre) # SF: Should it be (data.finalre)?
     }
     return(dat)
 }
