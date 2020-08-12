@@ -1,6 +1,6 @@
-#' Calculate skewness and kurtosis based on Beta distribution in a meta-analysis for SMD
+#' Calculate skewness and kurtosis based on an arbitrary function in a meta-analysis for SMD
 #'
-#'This function can be used to calculate the skewness and kurtosis based on the Beta distribution with the dataset used to conduct meta-analysis.
+#'This function can be used to calculate the skewness and kurtosis based on an arbitrary function with the dataset used to conduct meta-analysis.
 #'@param m1i vector to the means of first group
 #'@param sd1i vector to specifiy the standard deviation of first group
 #'@param n1i vector to specify the sample size of first group
@@ -12,15 +12,24 @@
 #'@param lo2i vector to specify the possible minimum of the second group
 #'@param hi2i vector to specify the possible maximum of the second group
 #'@param showFigure when showFigure = TRUE, it will display all the plots (within the result as a list, result$fig) with theoretical normal curve and the truncated normal curve.
+#'@param anyfunc The function to be used. Should be a function with interface identical to that of other function in this pacakge, such as des2beta.
 #'@param ... other arguments
 #'@examples
 #'data("metadat")
-#'ex <- des2beta( m1i = m1,sd1i = sd1,n1i = n1,hi1i = p.max,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2, hi2i = p.max,lo2i=0,data = metadat)
+#'ex_beta <- des2any( m1i = m1,sd1i = sd1,n1i = n1,hi1i = p.max,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2, hi2i = p.max,lo2i=0,data = metadat, anyfunc = desbeta)
+#'ex_trunc <- des2any( m1i = m1,sd1i = sd1,n1i = n1,hi1i = p.max,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2, hi2i = p.max,lo2i=0,data = metadat, anyfunc = destrunc)
 #'@export
-des2beta <- function(m1i,sd1i,n1i,lo1i,hi1i,
+des2any <- function(m1i,sd1i,n1i,lo1i,hi1i,
                       m2i, sd2i, n2i, lo2i, hi2i, data,
                       showFigure = FALSE,
+                      anyfunc,
                       ...){
+    if (missing(anyfunc)) {
+        stop("The function (anyfunc) is not specified")
+    }
+    if (!is.function(anyfunc)) {
+        stop("The argument of anyfunc is not a function")
+    }
     if (missing(data))
         data <- NULL
     no.data <- is.null(data)
@@ -54,13 +63,13 @@ des2beta <- function(m1i,sd1i,n1i,lo1i,hi1i,
     fig2 <- list()
     if(showFigure == TRUE){
         for (i in 1:nrow(data)){
-            g1 <- desbeta(vmean = m1i[[i]], vsd = sd1i[[i]],
+            g1 <- anyfunc(vmean = m1i[[i]], vsd = sd1i[[i]],
                            hi = hi1i[[i]], lo = lo1i[[i]],
                            showFigure = TRUE)
             finalre1[[i]] <- g1$dat
             fig1[[i]] <- g1$fig + labs(title = paste("Group 1 in Study ",
                                                      i, sep=""))
-            g2 <- desbeta(vmean = m2i[[i]], vsd = sd2i[[i]],
+            g2 <- anyfunc(vmean = m2i[[i]], vsd = sd2i[[i]],
                            hi = hi2i[[i]], lo = lo2i[[i]],
                            showFigure = TRUE)
             finalre2[[i]] <- g2$dat
@@ -73,13 +82,13 @@ des2beta <- function(m1i,sd1i,n1i,lo1i,hi1i,
         colnames(finalre2) <- paste(colnames(finalre2),2, sep="")
         finalre <- cbind(finalre1, finalre2)
         fig <- list(fig1, fig2)
-        dat <- data.frame(data, finalre) # SF: Should it be (data.finalre)?
+        dat <- data.frame(data, finalre)
         dat <- list(dat = dat, fig = fig)
     } else {
         for (i in 1:nrow(data)){
-            finalre1[[i]] <- desbeta(vmean = m1i[[i]], vsd = sd1i[[i]],
+            finalre1[[i]] <- anyfunc(vmean = m1i[[i]], vsd = sd1i[[i]],
                                       hi = hi1i[[i]], lo = lo1i[[i]])
-            finalre2[[i]] <- desbeta(vmean = m2i[[i]], vsd = sd2i[[i]],
+            finalre2[[i]] <- anyfunc(vmean = m2i[[i]], vsd = sd2i[[i]],
                                       hi = hi2i[[i]], lo = lo2i[[i]])
         }
         finalre1 <- do.call(rbind, finalre1)
@@ -87,7 +96,7 @@ des2beta <- function(m1i,sd1i,n1i,lo1i,hi1i,
         finalre2 <- do.call(rbind,finalre2)
         colnames(finalre2) <- paste(colnames(finalre2),2, sep="")
         finalre <- cbind(finalre1, finalre2)
-        dat <- data.frame(data, finalre) # SF: Should it be (data.finalre)?
+        dat <- data.frame(data, finalre)
     }
     return(dat)
 }
