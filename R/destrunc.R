@@ -6,23 +6,43 @@
 #'@param lo minimum possible value
 #'@param hi maximum possible value
 #'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.
+#'@param rawdata when raw data is available, we could still use it to check it figuratively, if the data was closed to the normal distribution, or truncated normal distribution.
 #'@param ... other arguments
 #'@import ggplot2
 #'@import truncnorm
 #'@examples
 #'data("metadat")
-#'destrunc(vmean = metadat$m2[6], vsd = metadat$sd2[6],
-#'         hi = metadat$p.max[6], showFigure = T)
+#'destrunc(vmean=dat$m2[6], vsd=dat$sd2[6],
+#'hi = dat$p.max[6],showFigure = T)
 #'@seealso \code{\link{desbeta}}
-#'@export
 destrunc <- function(vmean,
                       vsd,
-                      lo = 0,
+                      lo,
                       hi,
+                      rawdata = NULL,
                       showFigure = FALSE,
                       ...){
   require(ggplot2)
   require(truncnorm)
+  if(!is.null(rawdata)){
+    vmean <- mean(rawdata, is.na = TRUE)
+    print(paste("mean is ", vmean, sep=""))
+    vsd <- sd(rawdata)
+    print(paste("sd is ", vsd, sep=""))
+    if(missing(lo)){
+      lo <- min(rawdata)
+    }
+    if(missing(hi)){
+      hi <- max(rawdata)
+    }
+    print(paste("min. is ", lo, sep=""))
+    print(paste("max. is ", hi, sep=""))
+  }else{
+    vmean <- vmean
+    vsd <- vsd
+    lo <- lo
+    hi <- hi
+  }
   model <- function(x){
     f <- numeric(2)
     lower.std = (lo - x[1])/x[2]
@@ -66,20 +86,43 @@ destrunc <- function(vmean,
   if (showFigure == TRUE) {
     ynames <- paste("skew=", round(result$skew, 3),
                     ",kurt=", round(result$kurt, 3),
+                    "; red-trunc; blue-normal",
                     sep = "")
-    fig <- ggplot2::ggplot(data.frame(x = c(lo, hi)), aes(x = x)) +
-      stat_function(fun = dnorm, args = list(vmean, vsd),
-                    colour = "blue")+
-      stat_function(fun = dtruncnorm, args = list(a=lo, b=hi,
-                                                  mean=result$pmean,
-                                                  sd=result$psd),
-                    colour = "red")+
-      labs(title = ynames, y = "density", x = "x") +
-      theme(panel.background = element_rect(fill = "white",
-                                            colour = "grey50"),
-            legend.position = "bottom",
-            strip.background = element_rect(colour = "black",
-                                            fill = "white"))
+    if(!is.null(data)){
+      ynames <- paste(ynames, "; black-density", sep="")
+      fig <- ggplot2::ggplot(data.frame(x = rawdata),
+                             aes(x = rawdata)) +
+        geom_histogram(aes(y=..density..), colour = "black", fill = "white",
+                       bins = (hi - lo)-1, boundary = 0) +
+        geom_density(alpha = .2) +
+        stat_function(fun = dnorm, args = list(vmean, vsd),
+                      colour = "blue")+
+        stat_function(fun = dtruncnorm, args = list(a=lo, b=hi,
+                                                    mean=result$pmean,
+                                                    sd=result$psd),
+                      colour = "red")+
+        labs(title = ynames, y = "density", x = "x") +
+        theme(panel.background = element_rect(fill = "white",
+                                              colour = "grey50"),
+              legend.position = "bottom",
+              strip.background = element_rect(colour = "black",
+                                              fill = "white"))
+    } else{
+      fig <- ggplot2::ggplot(data.frame(x = c(lo, hi)), aes(x = x)) +
+        stat_function(fun = dnorm, args = list(vmean, vsd),
+                      colour = "blue")+
+        stat_function(fun = dtruncnorm, args = list(a=lo, b=hi,
+                                                    mean=result$pmean,
+                                                    sd=result$psd),
+                      colour = "red")+
+        labs(title = ynames, y = "density", x = "x") +
+        theme(panel.background = element_rect(fill = "white",
+                                              colour = "grey50"),
+              legend.position = "bottom",
+              strip.background = element_rect(colour = "black",
+                                              fill = "white"))
+    }
+
     result <- list(dat = result, fig = fig)
   }
   return(result)
