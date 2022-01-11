@@ -4,7 +4,7 @@
 \alias{desbeta}
 \title{Calculate skewness and kurtosis based on Beta distribution in one group}
 \usage{
-desbeta(vmean, vsd, lo = 0, hi = 1, showFigure = FALSE, ...)
+desbeta(vmean, vsd, lo, hi, rawdata = NULL, showFigure = FALSE, ...)
 }
 \arguments{
 \item{vmean}{sample mean of the truncated data}
@@ -23,9 +23,9 @@ desbeta(vmean, vsd, lo = 0, hi = 1, showFigure = FALSE, ...)
 This function can be used to calculate the skewness and kurtosis based on the Beta distribution. Also, this function estimate the shape parameters alpha and beta.
 }
 \examples{
-data("metadat")
-desbeta(vmean=dat$m2[6], vsd=dat$sd2[6],
-hi = dat$p.max[6],showFigure = T)
+data('metadat')
+desbeta(vmean=metadat$m2[6], vsd=metadat$sd2[6],
+hi = metadat$p.max[6], lo = 0, showFigure = T)
 }
 \seealso{
 \code{\link{destrunc}}

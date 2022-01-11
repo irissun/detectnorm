@@ -1,3 +1,21 @@
+#' Calculate skewness and kurtosis based on Beta or truncated normal distribution in a meta-analysis for SMD (Two independent groups)
+#'
+#'This function can be used to calculate the skewness and kurtosis based on the Beta distribution with the dataset used to conduct meta-analysis.
+#'@param m1i vector to the means of first group
+#'@param sd1i vector to specifiy the standard deviation of first group
+#'@param n1i vector to specify the sample size of first group
+#'@param lo1i vector to specify the possible minimum of the first group
+#'@param hi1i vector to specify the possible maximum of the first group
+#'@param m2i vector to the means of second group
+#'@param sd2i vector to specifiy the standard deviation of second group
+#'@param n2i vector to specify the sample size of second group
+#'@param lo2i vector to specify the possible minimum of the second group
+#'@param hi2i vector to specify the possible maximum of the second group
+#'@param showFigure when showFigure = TRUE, it will display all the plots (within the result as a list, result$fig) with theoretical normal curve and the truncated normal curve.
+#'@param ... other arguments
+#'@examples
+#'data("metadat")
+#'ex <- detectnorm(m1i = m1,sd1i = sd1,n1i = n1,hi1i = p.max,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2, hi2i = p.max,lo2i=0,distri = "beta", data = metadat)
 detectnorm <- function(m1i,sd1i,n1i, lo1i, hi1i,
                         m2i, sd2i, n2i, lo2i, hi2i,
                         data,
@@ -43,6 +61,8 @@ detectnorm <- function(m1i,sd1i,n1i, lo1i, hi1i,
     distri <- get(distri)
   } else if (distri == "truncnorm"){
     distri <- 'destrunc'
+    distri <- get(distri)
+  } else {
     distri <- get(distri)
   }
   if (showFigure == TRUE) {

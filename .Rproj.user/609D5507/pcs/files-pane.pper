@@ -1,9 +1,9 @@
 {
-    "path" : "~/Google Drive/detectnorm",
-    "sortOrder" : [
+    "path": "~/Documents/GitHub/detectnorm/man",
+    "sortOrder": [
         {
-            "ascending" : true,
-            "columnIndex" : 2
+            "columnIndex": 2,
+            "ascending": true
         }
     ]
 }

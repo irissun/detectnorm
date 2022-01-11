@@ -89,7 +89,7 @@ destrunc <- function(vmean,
                     "; red-trunc; blue-normal",
                     sep = "")
     if(!is.null(data)){
-      ynames <- paste(ynames, "; black-density", sep="")
+      ynames <- paste(ynames, sep="")
       fig <- ggplot2::ggplot(data.frame(x = rawdata),
                              aes(x = rawdata)) +
         geom_histogram(aes(y=..density..), colour = "black", fill = "white",
