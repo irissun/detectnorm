@@ -13,6 +13,7 @@
 #'@param hi2i vector to specify the possible maximum of the second group
 #'@param showFigure when showFigure = TRUE, it will display all the plots (within the result as a list, result$fig) with theoretical normal curve and the truncated normal curve.
 #'@param ... other arguments
+#'@export
 #'@examples
 #'data("metadat")
 #'ex <- detectnorm(m1i = m1,sd1i = sd1,n1i = n1,hi1i = p.max,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2, hi2i = p.max,lo2i=0,distri = "beta", data = metadat)

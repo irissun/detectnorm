@@ -10,6 +10,7 @@
 #'@param ... other arguments
 #'@import ggplot2
 #'@import truncnorm
+#'@export
 #'@examples
 #'data("metadat")
 #'destrunc(vmean=dat$m2[6], vsd=dat$sd2[6],
