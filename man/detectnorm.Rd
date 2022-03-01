@@ -50,6 +50,11 @@ detectnorm(
 This function can be used to calculate the skewness and kurtosis based on the Beta distribution with the dataset used to conduct meta-analysis.
 }
 \examples{
+\dontrun{
 data("metadat")
-ex <- detectnorm(m1i = m1,sd1i = sd1,n1i = n1,hi1i = p.max,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2, hi2i = p.max,lo2i=0,distri = "beta", data = metadat)
+ex <- detectnorm(m1i = m1,sd1i = sd1,n1i = n1,
+hi1i = p.max,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2,
+hi2i = p.max,lo2i=0,distri = "beta", data = metadat)
+}
+
 }
