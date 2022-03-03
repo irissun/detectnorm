@@ -9,7 +9,9 @@
 #'@param rawdata when raw data is available, we could still use it to check it figuratively, if the data was closed to the normal distribution, or truncated normal distribution.
 #'@param ... other arguments
 #'@import ggplot2
-#'@import truncnorm
+#'@importFrom truncnorm dtruncnorm
+#'@importFrom nleqslv nleqslv
+#'
 #'@export
 #'@examples
 #'\dontrun{
@@ -25,8 +27,6 @@ destrunc <- function(vmean,
                       rawdata = NULL,
                       showFigure = FALSE,
                       ...){
-  require(ggplot2)
-  require(truncnorm)
   if(!is.null(rawdata)){
     vmean <- mean(rawdata, is.na = TRUE)
     print(paste("mean is ", vmean, sep=""))
@@ -60,7 +60,7 @@ destrunc <- function(vmean,
   }
   xstart <- c(0, 1)
   #To gain the mean and SD of the parent distribution
-  ans <- as.data.frame(nleqslv::nleqslv(xstart, model, method = "Newton",
+  ans <- as.data.frame(nleqslv(xstart, model, method = "Newton",
                                         control = list(btol=.000001,
                                                        delta="newton",
                                                        allowSingular=FALSE)))
@@ -93,7 +93,7 @@ destrunc <- function(vmean,
                     sep = "")
     if(!is.null(data)){
       ynames <- paste(ynames, sep="")
-      fig <- ggplot2::ggplot(data.frame(x = rawdata),
+      fig <- ggplot(data.frame(x = rawdata),
                              aes(x = rawdata)) +
         geom_histogram(aes(y=..density..), colour = "black", fill = "white",
                        bins = (hi - lo)-1, boundary = 0) +
@@ -111,7 +111,7 @@ destrunc <- function(vmean,
               strip.background = element_rect(colour = "black",
                                               fill = "white"))
     } else{
-      fig <- ggplot2::ggplot(data.frame(x = c(lo, hi)), aes(x = x)) +
+      fig <- ggplot(data.frame(x = c(lo, hi)), aes(x = x)) +
         stat_function(fun = dnorm, args = list(vmean, vsd),
                       colour = "blue")+
         stat_function(fun = dtruncnorm, args = list(a=lo, b=hi,

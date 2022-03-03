@@ -8,7 +8,6 @@
 #'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.
 #'@param ... other arguments
 #'@import ggplot2
-#'@import truncnorm
 #'@export
 #'@examples
 #'\dontrun{
@@ -24,7 +23,6 @@ desbeta <- function(vmean,
                     hi,
                     rawdata = NULL,
                     showFigure = FALSE, ...) {
-    require(ggplot2)
     if(!is.null(rawdata)){
         vmean <- mean(rawdata, is.na = TRUE)
         print(paste("mean is ", vmean, sep=""))
@@ -69,7 +67,7 @@ desbeta <- function(vmean,
             3), "; red-beta; blue-normal",sep = "" )
         if(!is.null(rawdata)){
             ynames <- paste(ynames, "; black-density", sep="")
-            fig <- ggplot2::ggplot(data.frame(x = rawdata),
+            fig <- ggplot(data.frame(x = rawdata),
                                    aes(x = rawdata)) +
                 geom_histogram(aes(y=..density..), colour = "black", fill = "white",
                                bins = (hi - lo)+1) +
@@ -85,7 +83,7 @@ desbeta <- function(vmean,
                       strip.background = element_rect(colour = "black",
                                                       fill = "white"))
         } else{
-            fig <- ggplot2::ggplot(data.frame(x = c(lo, hi)), aes(x = x)) +
+            fig <- ggplot(data.frame(x = c(lo, hi)), aes(x = x)) +
                 stat_function(fun = dnorm, args = list(vmean, vsd), colour = "blue") +
                 stat_function(fun = dbeta4param, args =
                                   list(alpha = balpha, beta = bbeta, hi = hi, lo = lo),

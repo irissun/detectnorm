@@ -1,6 +1,7 @@
-#' Calculate skewness and kurtosis based on Beta or truncated normal distribution in a meta-analysis for SMD (Two independent groups)
+#' @title Calculate skewness and kurtosis based on Beta or truncated normal distribution in a meta-analysis for SMD (Two independent groups)
 #'
-#'This function can be used to calculate the skewness and kurtosis based on the Beta distribution with the dataset used to conduct meta-analysis.
+#' @description This function can be used to calculate the skewness and kurtosis based on the Beta distribution with the dataset used to conduct meta-analysis.
+#' @encoding UTF-8
 #'@param m1i vector to the means of first group
 #'@param sd1i vector to specifiy the standard deviation of first group
 #'@param n1i vector to specify the sample size of first group
@@ -13,6 +14,7 @@
 #'@param hi2i vector to specify the possible maximum of the second group
 #'@param showFigure when showFigure = TRUE, it will display all the plots (within the result as a list, result$fig) with theoretical normal curve and the truncated normal curve.
 #'@param ... other arguments
+#'
 #'@export
 #'@examples
 #'\dontrun{
@@ -21,6 +23,9 @@
 #'hi1i = p.max,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2,
 #'hi2i = p.max,lo2i=0,distri = "beta", data = metadat)
 #'}
+#'
+#'@referneces
+#'
 #'
 detectnorm <- function(m1i,sd1i,n1i, lo1i, hi1i,
                         m2i, sd2i, n2i, lo2i, hi2i,
