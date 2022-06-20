@@ -7,12 +7,12 @@
 #'@param hi maximum possible value
 #'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.
 #'@param rawdata when raw data is available, we could still use it to check it figuratively, if the data was closed to the normal distribution, or truncated normal distribution.
-#'@param xstart see the package \code{\link{nlesqlv::nlesqlv}}
-#'@param btol see the package \code{\link{nlesqlv::nlesqlv}}
-#'@param ftol see the package \code{\link{nlesqlv::nlesqlv}}
+#'@param xstart see the package \code{\link[nleqslv]{nleqslv}}
+#'@param btol see the package \code{\link[nleqslv]{nleqslv}}
+#'@param ftol see the package \code{\link[nleqslv]{nleqslv}}
 #'@param ... other arguments
 #'@importFrom truncnorm dtruncnorm
-#'@importFrom nleqslv nleqslv
+#'@import nleqslv
 #'@export
 #'@examples
 #'\dontrun{

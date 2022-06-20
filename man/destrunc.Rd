@@ -30,11 +30,11 @@ destrunc(
 
 \item{showFigure}{when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.}
 
-\item{xstart}{see the package \code{\link{nlesqlv::nlesqlv}}}
+\item{xstart}{see the package \code{\link[nleqslv]{nleqslv}}}
 
-\item{btol}{see the package \code{\link{nlesqlv::nlesqlv}}}
+\item{btol}{see the package \code{\link[nleqslv]{nleqslv}}}
 
-\item{ftol}{see the package \code{\link{nlesqlv::nlesqlv}}}
+\item{ftol}{see the package \code{\link[nleqslv]{nleqslv}}}
 
 \item{...}{other arguments}
 }
