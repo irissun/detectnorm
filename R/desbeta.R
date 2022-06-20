@@ -5,6 +5,8 @@
 #'@param vsd sample standard deviation of the truncated data
 #'@param lo minimum possible value
 #'@param hi maximum possible value
+#'@param method when method = 'MM', the method used is the method of moments, when method = "ML', the method used to estimate the distribution is maximum likelihood
+#'@param rawdata when raw data is available, we could still use it to check it figuratively, if the data was closed to the normal distribution, or truncated normal distribution.
 #'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.
 #'@param ... other arguments
 #'@import ggplot2
@@ -21,6 +23,7 @@ desbeta <- function(vmean,
                     vsd,
                     lo,
                     hi,
+                    method = "MM",
                     rawdata = NULL,
                     showFigure = FALSE, ...) {
     if(!is.null(rawdata)){
@@ -67,7 +70,7 @@ desbeta <- function(vmean,
             3), "; red-beta; blue-normal",sep = "" )
         if(!is.null(rawdata)){
             ynames <- paste(ynames, "; black-density", sep="")
-            fig <- ggplot(data.frame(x = rawdata),
+            fig <- ggplot2::ggplot(data.frame(x = rawdata),
                                    aes(x = rawdata)) +
                 geom_histogram(aes(y=..density..), colour = "black", fill = "white",
                                bins = (hi - lo)+1) +

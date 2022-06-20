@@ -20,12 +20,16 @@ Description: More about what it does (maybe more than one line)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends:
+    R (>= 2.10)
 Imports:
     nleqslv,
     ggplot2,
-    truncnorm
+    truncnorm,
+    Rdpack
 Suggests:
     metafor,
     testthat (>= 3.0.0)
+RdMacros: Rdpack
 RoxygenNote: 7.1.2
 Config/testthat/edition: 3

@@ -7,27 +7,30 @@
 #'@param hi maximum possible value
 #'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.
 #'@param rawdata when raw data is available, we could still use it to check it figuratively, if the data was closed to the normal distribution, or truncated normal distribution.
+#'@param xstart see the package \code{\link{nlesqlv::nlesqlv}}
+#'@param btol see the package \code{\link{nlesqlv::nlesqlv}}
+#'@param ftol see the package \code{\link{nlesqlv::nlesqlv}}
 #'@param ... other arguments
-#'@import ggplot2
 #'@importFrom truncnorm dtruncnorm
 #'@importFrom nleqslv nleqslv
-#'
 #'@export
 #'@examples
 #'\dontrun{
 #'data("metadat")
-#'destrunc(vmean=dat$m2[6], vsd=dat$sd2[6],
-#'hi = dat$p.max[6],showFigure = T)
+#'destrunc(vmean=metadat$m2[6], vsd=metadat$sd2[6],
+#'hi = metadat$p.max[6],showFigure = T)
 #'}
 #'@seealso \code{\link{desbeta}}
 destrunc <- function(vmean,
-                      vsd,
-                      lo,
-                      hi,
-                      adjust = TRUE,
-                      rawdata = NULL,
-                      showFigure = FALSE,
-                      ...){
+                     vsd,
+                     lo,
+                     hi,
+                     rawdata = NULL,
+                     showFigure = FALSE,
+                     xstart,
+                     btol,
+                     ftol,
+                     ...){
   if(!is.null(rawdata)){
     vmean <- mean(rawdata, is.na = TRUE)
     print(paste("mean is ", vmean, sep=""))
@@ -44,10 +47,12 @@ destrunc <- function(vmean,
   }else{
     vmean <- vmean
     vsd <- vsd
-    lo <- lo
     hi <- hi
+    if(missing(lo)){lo <- 0} else{lo <- lo}
   }
-  model <- function(x){
+
+  #To gain the mean and SD of the parent distribution
+  model.x <- function(x){
     f <- numeric(2)
     lower.std = (lo - x[1])/x[2]
     upper.std = (hi - x[1])/x[2]
@@ -59,12 +64,33 @@ destrunc <- function(vmean,
                         (pnorm(upper.std)-pnorm(lower.std)))^2) -vsd^2
     f
   }
-  xstart <- c(0, 1)
-  #To gain the mean and SD of the parent distribution
-  ans <- as.data.frame(nleqslv(xstart, model, method = "Newton",
-                                        control = list(btol=.000001,
-                                                       delta="newton",
-                                                       allowSingular=FALSE)))
+  if(missing(xstart)){
+    xstart <- c(vmean, vsd)
+  }
+  if(missing(btol)){
+    btol <- .000000001
+  }
+  if(missing(ftol)){
+    ftol <- .000000001
+  }
+  ans <- as.data.frame(nleqslv(xstart, model.x, method = "Newton",
+                               control = list(btol = btol,
+                                              ftol = ftol)))
+  if(ans$x[1]> vmean + 4*vsd | ans$x[1]<vmean - 4*vsd){
+    warning("Mean of Parent distribution is out of 4sd range")
+  }
+  if(ans$x[2]<0){
+    warning("SD of parent distribution is less than zero")
+    ans$x[2] <- NA
+  }
+  if(ans$message[1] == "No better point found (algorithm has stalled)"){
+    warning(ans$message[1])
+    ans$x[[1]] <- NA
+  }
+  if(ans$message[2] == "No better point found (algorithm has stalled)"){
+    warning(ans$message[2])
+    ans$x[[2]] <- NA
+  }
   # This part is for simplifying the calculation
   h1l = (lo - ans$x[[1]])/ans$x[[2]]; h1u = (hi - ans$x[[1]])/ans$x[[2]]
   h2l <- h1l^2 - 1; h2u <- h1u^2 - 1
@@ -84,8 +110,8 @@ destrunc <- function(vmean,
   )/
     (1 + (h1l*d2l - h1u*d2u)/(p2u - p2l) - (d2l - d2u)^2/(p2u - p2l)^2)^2 -3
   result<- data.frame(pmean = ans$x[[1]], psd = ans$x[[2]],
-                #pmean and psd is the population mean and sd of the parent distribution
-                tm = m1, tsd = sd1, skew = skew, kurt = kurt)
+                      #pmean and psd is the population mean and sd of the parent distribution
+                      tm = m1, tsd = sd1, skewness = skew, kurtosis = kurt)
 
   if (showFigure == TRUE) {
     ynames <- paste("skew=", round(result$skew, 3),
@@ -95,7 +121,7 @@ destrunc <- function(vmean,
     if(!is.null(data)){
       ynames <- paste(ynames, sep="")
       fig <- ggplot(data.frame(x = rawdata),
-                             aes(x = rawdata)) +
+                    aes(x = rawdata)) +
         geom_histogram(aes(y=..density..), colour = "black", fill = "white",
                        bins = (hi - lo)-1, boundary = 0) +
         geom_density(alpha = .2) +
@@ -131,4 +157,3 @@ destrunc <- function(vmean,
   }
   return(result)
 }
-

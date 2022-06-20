@@ -12,10 +12,16 @@
 #'@param n2i vector to specify the sample size of second group
 #'@param lo2i vector to specify the possible minimum of the second group
 #'@param hi2i vector to specify the possible maximum of the second group
+#'@param distri Beta distribution is used when using `distri = "beta"`; Truncated normal distribution is used when using `distri = "truncnorm"`
+#'@param data the opitional original data frame containing the data for the function
 #'@param showFigure when showFigure = TRUE, it will display all the plots (within the result as a list, result$fig) with theoretical normal curve and the truncated normal curve.
 #'@param ... other arguments
 #'
 #'@export
+#'@importFrom stats dnorm pnorm sd density
+#'@importFrom utils data
+#'@import ggplot2
+#'
 #'@examples
 #'\dontrun{
 #'data("metadat")
@@ -26,6 +32,13 @@
 #'
 #'@referneces
 #'
+#' \insertRef{Rpack:bibtex}{Rdpack}
+#'
+#' \insertRef{parseRd}{Rdpack}
+#'
+#' \insertRef{bibutils6.10}{rbibutils}
+#'
+#' \insertAllCited{}
 #'
 detectnorm <- function(m1i,sd1i,n1i, lo1i, hi1i,
                         m2i, sd2i, n2i, lo2i, hi2i,

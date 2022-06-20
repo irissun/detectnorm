@@ -43,7 +43,11 @@ detectnorm(
 
 \item{hi2i}{vector to specify the possible maximum of the second group}
 
+\item{data}{the opitional original data frame containing the data for the function}
+
 \item{showFigure}{when showFigure = TRUE, it will display all the plots (within the result as a list, result$fig) with theoretical normal curve and the truncated normal curve.}
+
+\item{distri}{Beta distribution is used when using `distri = "beta"`; Truncated normal distribution is used when using `distri = "truncnorm"`}
 
 \item{...}{other arguments}
 }

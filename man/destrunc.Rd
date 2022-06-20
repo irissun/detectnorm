@@ -4,7 +4,18 @@
 \alias{destrunc}
 \title{Calculate skewness and kurtosis based on truncated normal distribution in one group}
 \usage{
-destrunc(vmean, vsd, lo, hi, rawdata = NULL, showFigure = FALSE, ...)
+destrunc(
+  vmean,
+  vsd,
+  lo,
+  hi,
+  rawdata = NULL,
+  showFigure = FALSE,
+  xstart,
+  btol,
+  ftol,
+  ...
+)
 }
 \arguments{
 \item{vmean}{sample mean of the truncated data}
@@ -19,6 +30,12 @@ destrunc(vmean, vsd, lo, hi, rawdata = NULL, showFigure = FALSE, ...)
 
 \item{showFigure}{when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.}
 
+\item{xstart}{see the package \code{\link{nlesqlv::nlesqlv}}}
+
+\item{btol}{see the package \code{\link{nlesqlv::nlesqlv}}}
+
+\item{ftol}{see the package \code{\link{nlesqlv::nlesqlv}}}
+
 \item{...}{other arguments}
 }
 \description{
@@ -27,8 +44,8 @@ This function can be used to calculate the skewness and kurtosis based on the tr
 \examples{
 \dontrun{
 data("metadat")
-destrunc(vmean=dat$m2[6], vsd=dat$sd2[6],
-hi = dat$p.max[6],showFigure = T)
+destrunc(vmean=metadat$m2[6], vsd=metadat$sd2[6],
+hi = metadat$p.max[6],showFigure = T)
 }
 }
 \seealso{

@@ -4,7 +4,16 @@
 \alias{desbeta}
 \title{Calculate skewness and kurtosis based on Beta distribution in one group}
 \usage{
-desbeta(vmean, vsd, lo, hi, rawdata = NULL, showFigure = FALSE, ...)
+desbeta(
+  vmean,
+  vsd,
+  lo,
+  hi,
+  method = "MM",
+  rawdata = NULL,
+  showFigure = FALSE,
+  ...
+)
 }
 \arguments{
 \item{vmean}{sample mean of the truncated data}
@@ -14,6 +23,10 @@ desbeta(vmean, vsd, lo, hi, rawdata = NULL, showFigure = FALSE, ...)
 \item{lo}{minimum possible value}
 
 \item{hi}{maximum possible value}
+
+\item{method}{when method = 'MM', the method used is the method of moments, when method = "ML', the method used to estimate the distribution is maximum likelihood}
+
+\item{rawdata}{when raw data is available, we could still use it to check it figuratively, if the data was closed to the normal distribution, or truncated normal distribution.}
 
 \item{showFigure}{when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.}
 
