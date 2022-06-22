@@ -3,6 +3,7 @@
 export(desbeta)
 export(destrunc)
 export(detectnorm)
+export(rnonnorm)
 import(ggplot2)
 import(nleqslv)
 importFrom(stats,density)
