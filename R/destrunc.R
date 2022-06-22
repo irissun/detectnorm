@@ -50,7 +50,7 @@ destrunc <- function(vmean,
     hi <- hi
     if(missing(lo)){lo <- 0} else{lo <- lo}
   }
-
+  if(vsd == 0){vsd <- .01}
   #To gain the mean and SD of the parent distribution
   model.x <- function(x){
     f <- numeric(2)
@@ -68,20 +68,19 @@ destrunc <- function(vmean,
     xstart <- c(vmean, vsd)
   }
   if(missing(btol)){
-    btol <- .000000001
+    btol <- .000001
   }
   if(missing(ftol)){
-    ftol <- .000000001
+    ftol <- .000001
   }
   ans <- as.data.frame(nleqslv(xstart, model.x, method = "Newton",
                                control = list(btol = btol,
-                                              ftol = ftol)))
-  if(ans$x[1]> vmean + 4*vsd | ans$x[1]<vmean - 4*vsd){
-    warning("Mean of Parent distribution is out of 4sd range")
-  }
+                                              ftol = ftol,
+                                              allowSingular = TRUE)))
+  #if(ans$x[1]> vmean + 4*vsd | ans$x[1]<vmean - 4*vsd){warning("Mean of Parent distribution is out of 4sd range")}
   if(ans$x[2]<0){
     warning("SD of parent distribution is less than zero")
-    ans$x[2] <- NA
+    ans$x[[2]] <- NA
   }
   if(ans$message[1] == "No better point found (algorithm has stalled)"){
     warning(ans$message[1])

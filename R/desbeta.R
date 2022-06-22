@@ -45,6 +45,7 @@ desbeta <- function(vmean,
         lo <- lo
         hi <- hi
     }
+  if(vsd == 0){vsd <- .01}
     vrange <- hi - lo
     bmean <- (vmean - lo)/vrange
     bv <- (vsd^2)/(vrange^2)

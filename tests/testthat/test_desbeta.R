@@ -1,4 +1,3 @@
-
 test_that("Check if desbeta provide stable result", {
   #metadat[11,]group1
   #check skewness
