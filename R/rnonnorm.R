@@ -2,20 +2,21 @@
 #' Generating Non-normal data with specified skewness and kurtosis using Fleishman's Method
 #'
 #'This function can be used to generate non-normal data with specified skewness and kurtosis using Fleishman's Power Method.
-#' n, mean = 0, sd = 1, skew = 0, kurt = 0
-#'@param n snumber of observations
+#'@param n number of observations
 #'@param mean mean
 #'@param sd standard deviation
 #'@param skew skewness
 #'@param kurt kurtosis
-#'@importFrom truncnorm dtruncnorm
+#'@importFrom stats rnorm
 #'@import nleqslv
 #'@export
+#'
 #'@examples
 #'\dontrun{
 #'set.seed(341031)
 #'exdat <- rnonnorm(n = 100, mean = 1, sd = 2, skew = 3, kurt = 2)
 #'hist(exdat)
+#'}
 #'
 rnonnorm <- function(n, mean = 0, sd = 1, skew = 0, kurt = 0){
   var <- sd^2

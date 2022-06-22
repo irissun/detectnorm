@@ -46,24 +46,45 @@ devtools::install_github("irissun/detectnorm")
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
-# load package
+For one study if you assumed non-normal distribution in population: 
+```{r beta_example}
+library(detectnorm)
+# Situations using beta distributions
+set.seed(32411)
+#Using Fleishman's method to generate non-normal data
+dat1 <- rnonnorm(n = 1000, mean = 0, sd = 1, skew = 2, kurt = 5)$dat
+hist(dat1)
+psych::describe(dat1)
+#Suppose we don't know about the raw data
+result <- desbeta(vmean = mean(dat1), vsd = sd(dat1),lo = min(dat1), hi = max(dat1), showFigure = TRUE, rawdata = dat1)
+result
+```
+
+For one study if you assumed normal distribution in population with truncated by the measurements: 
+```{r trun_example}
+library(detectnorm)
+#Truncated normal distribution
+set.seed(34120)
+dat2 <- truncnorm::rtruncnorm(n = 1000, a = 0, b = 14, mean = 4, sd = 3)
+psych::describe(dat2)
+destrunc(vmean=mean(dat2), vsd=sd(dat2), lo=0, hi=14, rawdata = dat2, showFigure = TRUE)
+```
+
+For one meta-analysis of two independent groups. It is very similar to the requirements for package `metafor` only you need to add one or two columns for each group about the possible minimum and maximum of the data. It will add information including:
+
+- `alpha1`, `beta1`, `alpha2`, and `beta2` are the shape parameters of beta distributions; 
+
+- `mean1`, `sd1.1`, `mean2`, `sd2.1` are the means and standard deviations of the standard beta distribution (ranged from 0 to 1); 
+
+- `skewness1`, `kurtosis1`, `skewness2`, and `kurtosis2` are the skewness and kurtosis of the two groups. 
+
+```{r meta_example}
 library(detectnorm)
 # examine the meta-analysis dataset by Bora et al (2019).
 # Note: it is not exactly the same data as Bora et al (2019) meta-analyzed. 
 # we also computed the cv (i.e., coefficient of variability) for the two groups (cv1 and cv2)
 data(metadat)
 head(metadat)
-```
-
-The situations for beta distribution:
-```{r}
-set.seed(32411)
-#Using Fleishman's method to generate non-normal data
-#dat1 <- rnonnorm(n = 1000, mean = 0, sd = 1, skew = 2, kurt = 5)$dat
-#hist(dat1)
-#psych::describe(dat1)
-#Suppose we don't know about the raw data
-#result <- desbeta(vmean = mean(dat1), vsd = sd(dat1),lo = min(dat1), hi = max(dat1), showFigure = TRUE, rawdata = dat1)
-#result
+metadat2 <- detectnorm(m1i = m1,sd1i = sd1,n1i = n1, hi1i = p.max,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2, hi2i = p.max,lo2i=0,distri = "beta", data = metadat)
+head(metadat2)
 ```

@@ -8,7 +8,7 @@ Generating Non-normal data with specified skewness and kurtosis using Fleishman'
 rnonnorm(n, mean = 0, sd = 1, skew = 0, kurt = 0)
 }
 \arguments{
-\item{n}{snumber of observations}
+\item{n}{number of observations}
 
 \item{mean}{mean}
 
@@ -20,5 +20,12 @@ rnonnorm(n, mean = 0, sd = 1, skew = 0, kurt = 0)
 }
 \description{
 This function can be used to generate non-normal data with specified skewness and kurtosis using Fleishman's Power Method.
-n, mean = 0, sd = 1, skew = 0, kurt = 0
+}
+\examples{
+\dontrun{
+set.seed(341031)
+exdat <- rnonnorm(n = 100, mean = 1, sd = 2, skew = 3, kurt = 2)
+hist(exdat)
+}
+
 }

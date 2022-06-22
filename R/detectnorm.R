@@ -30,16 +30,6 @@
 #'hi2i = p.max,lo2i=0,distri = "beta", data = metadat)
 #'}
 #'
-#'@referneces
-#'
-#' \insertRef{Rpack:bibtex}{Rdpack}
-#'
-#' \insertRef{parseRd}{Rdpack}
-#'
-#' \insertRef{bibutils6.10}{rbibutils}
-#'
-#' \insertAllCited{}
-#'
 detectnorm <- function(m1i,sd1i,n1i, lo1i, hi1i,
                         m2i, sd2i, n2i, lo2i, hi2i,
                         data,
