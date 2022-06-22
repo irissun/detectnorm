@@ -7,13 +7,14 @@
 #'@param sd standard deviation
 #'@param skew skewness
 #'@param kurt kurtosis
+#'@return A list of two objects: non-normal data is `dat`; and the other is the Fleishman Coeffficients used to generate the distributions.
 #'@importFrom stats rnorm
 #'@import nleqslv
 #'@export
 #'
 #'@examples
 #'set.seed(341031)
-#'exdat <- rnonnorm(n = 100, mean = 1, sd = 2, skew = 3, kurt = 2)
+#'exdat <- rnonnorm(n = 100, mean = 1, sd = 2, skew = 3, kurt = 2)$dat
 #'hist(exdat)
 #'
 rnonnorm <- function(n, mean = 0, sd = 1, skew = 0, kurt = 0){

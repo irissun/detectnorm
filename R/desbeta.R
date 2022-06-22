@@ -9,12 +9,13 @@
 #'@param rawdata when raw data is available, we could still use it to check it figuratively, if the data was closed to the normal distribution, or truncated normal distribution.
 #'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.
 #'@param ... other arguments
+#'@return If `showFigure = TRUE`, the output will be a list with two objects: one is the data frame of shape parameters (alpha and beta), mean and standard deviation of standard beta distribution (mean and sd), and skewness and kurtosis; the other is the theoretical figures of beta and normal distributions. If `showFigure = FALSE`, the output will be only the data frame.
 #'@import ggplot2
 #'@export
 #'@examples
 #'data('metadat')
 #'desbeta(vmean=metadat$m2[6], vsd=metadat$sd2[6],
-#'hi = metadat$p.max[6], lo = 0, showFigure = T)
+#'hi = metadat$p.max[6], lo = 0, showFigure = TRUE)
 #'
 #'@seealso \code{\link{destrunc}}
 desbeta <- function(vmean,

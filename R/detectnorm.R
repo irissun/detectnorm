@@ -16,7 +16,7 @@
 #'@param data the opitional original data frame containing the data for the function
 #'@param showFigure when showFigure = TRUE, it will display all the plots (within the result as a list, result$fig) with theoretical normal curve and the truncated normal curve.
 #'@param ... other arguments
-#'
+#'@return The output of the data frame adding some columns of the possible skewness and kurtosis for each groups.
 #'@export
 #'@importFrom stats dnorm pnorm sd density
 #'@importFrom utils data

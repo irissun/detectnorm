@@ -38,13 +38,17 @@ destrunc(
 
 \item{...}{other arguments}
 }
+\value{
+If `showFigure = TRUE`, the output will be a list with two objects: one is the data frame of parent mean and standard deviation (pmean and psd), mean and standard deviation of truncated normal distribution (mean and sd), and skewness and kurtosis; the other is the theoretical figures of beta and normal distributions. If `showFigure = FALSE`, the output will be only the data frame.
+}
 \description{
 This function can be used to calculate the skewness and kurtosis based on the truncated normal distribution. Also, it can be used to estimate the mean and variance of the parent distribution (the distribution before truncated).
 }
 \examples{
 data("metadat")
 destrunc(vmean=metadat$m2[6], vsd=metadat$sd2[6],
-hi = metadat$p.max[6],showFigure = T)
+hi = metadat$p.max[6],showFigure = TRUE)
+
 }
 \seealso{
 \code{\link{desbeta}}

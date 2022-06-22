@@ -51,6 +51,9 @@ detectnorm(
 
 \item{...}{other arguments}
 }
+\value{
+The output of the data frame adding some columns of the possible skewness and kurtosis for each groups.
+}
 \description{
 This function can be used to calculate the skewness and kurtosis based on the Beta distribution with the dataset used to conduct meta-analysis.
 }
