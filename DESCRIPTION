@@ -15,9 +15,13 @@ Authors@R: c(person(given="Rongwei",
                     comment = c(ORCID = "0000-0002-9871-9448")
                     ))
 Maintainer: Rongwei Sun <irissun_s@hotmail.com>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: This package aims at detect non-normality with only limited descriptive statistics, 
+including mean, standard deviation, minimum, and maximum. 
+    It is intented for meta-analysis users to detect the potential non-normality with two independent
+groups and without raw data from primary studies. 
 License: MIT + file LICENSE
+URL: https://github.com/irissun/detectnorm
+BugReports: https://github.com/irissun/detectnorm/issues
 Encoding: UTF-8
 LazyData: true
 Depends:
