@@ -12,11 +12,9 @@
 #'@export
 #'
 #'@examples
-#'\dontrun{
 #'set.seed(341031)
 #'exdat <- rnonnorm(n = 100, mean = 1, sd = 2, skew = 3, kurt = 2)
 #'hist(exdat)
-#'}
 #'
 rnonnorm <- function(n, mean = 0, sd = 1, skew = 0, kurt = 0){
   var <- sd^2

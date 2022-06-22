@@ -42,11 +42,9 @@ destrunc(
 This function can be used to calculate the skewness and kurtosis based on the truncated normal distribution. Also, it can be used to estimate the mean and variance of the parent distribution (the distribution before truncated).
 }
 \examples{
-\dontrun{
 data("metadat")
 destrunc(vmean=metadat$m2[6], vsd=metadat$sd2[6],
 hi = metadat$p.max[6],showFigure = T)
-}
 }
 \seealso{
 \code{\link{desbeta}}

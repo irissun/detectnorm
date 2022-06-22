@@ -22,10 +22,8 @@ rnonnorm(n, mean = 0, sd = 1, skew = 0, kurt = 0)
 This function can be used to generate non-normal data with specified skewness and kurtosis using Fleishman's Power Method.
 }
 \examples{
-\dontrun{
 set.seed(341031)
 exdat <- rnonnorm(n = 100, mean = 1, sd = 2, skew = 3, kurt = 2)
 hist(exdat)
-}
 
 }

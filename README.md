@@ -128,8 +128,8 @@ data. It will add information including:
 
 ``` r
 library(detectnorm)
-# examine the meta-analysis dataset by Bora et al (2019).
-# Note: it is not exactly the same data as Bora et al (2019) meta-analyzed. 
+# examine the meta-analysis dataset by Bora et al (2009).
+# Note: it is not exactly the same data as Bora et al (2009) meta-analyzed. 
 # we also computed the cv (i.e., coefficient of variability) for the two groups (cv1 and cv2)
 data(metadat)
 head(metadat)

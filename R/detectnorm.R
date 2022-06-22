@@ -23,13 +23,11 @@
 #'@import ggplot2
 #'
 #'@examples
-#'\dontrun{
 #'data("metadat")
 #'ex <- detectnorm(m1i = m1,sd1i = sd1,n1i = n1,
 #'hi1i = p.max,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2,
 #'hi2i = p.max,lo2i=0,distri = "beta", data = metadat)
-#'}
-#'
+#'head(ex)
 detectnorm <- function(m1i,sd1i,n1i, lo1i, hi1i,
                         m2i, sd2i, n2i, lo2i, hi2i,
                         data,

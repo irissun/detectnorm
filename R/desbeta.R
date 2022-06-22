@@ -12,11 +12,9 @@
 #'@import ggplot2
 #'@export
 #'@examples
-#'\dontrun{
 #'data('metadat')
 #'desbeta(vmean=metadat$m2[6], vsd=metadat$sd2[6],
 #'hi = metadat$p.max[6], lo = 0, showFigure = T)
-#'}
 #'
 #'@seealso \code{\link{destrunc}}
 desbeta <- function(vmean,
