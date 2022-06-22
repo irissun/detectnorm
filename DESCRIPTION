@@ -1,24 +1,22 @@
 Package: detectnorm
 Type: Package
-Title: Detect the nonnormality in primary studies in meta-analysis
+Title: Detect the nonnormality of primary studies in meta-analysis without raw data
 Version: 0.1.0
 Authors@R: c(person(given="Rongwei", 
                     family="Sun", 
-                    role = c("aut", "cre"),
+                    role = c("aut", "cre", "cph"),
                     email = "irissun_s@hotmail.com", 
                     comment = c(ORCID = "0000-0003-0034-1422")
                     ),
             person(given = "Shu Fai",
                     family="Cheung",
-                    role = c("aut", "ctb"),
-                    email = "sfcheung@umac.mo",
+                    role = c("aut", "ctb", "cph"),
+                    email = "sfcheung@um.edu.mo",
                     comment = c(ORCID = "0000-0002-9871-9448")
                     ))
 Maintainer: Rongwei Sun <irissun_s@hotmail.com>
-Description: This package aims at detect non-normality with only limited descriptive statistics, 
-including mean, standard deviation, minimum, and maximum. 
-    It is intented for meta-analysis users to detect the potential non-normality with two independent
-groups and without raw data from primary studies. 
+Description: This package aims to detect non-normality with only limited descriptive statistics, including mean, standard deviation, minimum, and maximum. 
+    It is intended for meta-analysis users to detect the potential non-normality of two independent groups without raw data from primary studies. 
 License: MIT + file LICENSE
 URL: https://github.com/irissun/detectnorm
 BugReports: https://github.com/irissun/detectnorm/issues
