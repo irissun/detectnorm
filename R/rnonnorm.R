@@ -17,6 +17,9 @@
 #'exdat <- rnonnorm(n = 100, mean = 1, sd = 2, skew = 3, kurt = 2)$dat
 #'hist(exdat)
 #'
+#'@references
+#'\insertRef{fleishman1978method}{detectnorm}
+#'
 rnonnorm <- function(n, mean = 0, sd = 1, skew = 0, kurt = 0){
   var <- sd^2
   model <- function(x){

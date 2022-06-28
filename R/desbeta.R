@@ -18,12 +18,13 @@
 #'hi = metadat$p.max[6], lo = 0, showFigure = TRUE)
 #'
 #'@seealso \code{\link{destrunc}}
-desbeta <- function(vmean,
-                    vsd,
-                    lo,
-                    hi,
-                    method = "MM",
-                    rawdata = NULL,
+#'
+#'@references
+#'\insertRef{johnson1995continuous}{detectnorm}
+#'
+#'\insertRef{smithson2006better}{detectnorm}
+#'
+desbeta <- function(vmean, vsd, lo, hi, method = "MM", rawdata = NULL,
                     showFigure = FALSE, ...) {
     if(!is.null(rawdata)){
         vmean <- mean(rawdata, is.na = TRUE)

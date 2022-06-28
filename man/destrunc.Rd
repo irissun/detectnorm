@@ -50,6 +50,13 @@ destrunc(vmean=metadat$m2[6], vsd=metadat$sd2[6],
 hi = metadat$p.max[6],showFigure = TRUE)
 
 }
+\references{
+\insertRef{shah1966estimation}{detectnorm}
+
+\insertRef{robert1995simulation}{detectnorm}
+
+\insertRef{barr1999mean}{detectnorm}
+}
 \seealso{
 \code{\link{desbeta}}
 }

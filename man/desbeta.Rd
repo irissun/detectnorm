@@ -44,6 +44,11 @@ desbeta(vmean=metadat$m2[6], vsd=metadat$sd2[6],
 hi = metadat$p.max[6], lo = 0, showFigure = TRUE)
 
 }
+\references{
+\insertRef{johnson1995continuous}{detectnorm}
+
+\insertRef{smithson2006better}{detectnorm}
+}
 \seealso{
 \code{\link{destrunc}}
 }

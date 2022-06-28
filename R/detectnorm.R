@@ -28,6 +28,19 @@
 #'hi1i = p.max,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2,
 #'hi2i = p.max,lo2i=0,distri = "beta", data = metadat)
 #'head(ex)
+#'@references
+#'\insertRef{barr1999mean}{detectnorm}
+#'
+#'\insertRef{johnson1995continuous}{detectnorm}
+#'
+#'\insertRef{robert1995simulation}{detectnorm}
+#'
+#'\insertRef{shah1966estimation}{detectnorm}
+#'
+#'\insertRef{smithson2006better}{detectnorm}
+#'
+#'\insertRef{sun2020influence}{detectnorm}
+#'
 detectnorm <- function(m1i,sd1i,n1i, lo1i, hi1i,
                         m2i, sd2i, n2i, lo2i, hi2i,
                         data,

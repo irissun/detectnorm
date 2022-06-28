@@ -30,3 +30,6 @@ exdat <- rnonnorm(n = 100, mean = 1, sd = 2, skew = 3, kurt = 2)$dat
 hist(exdat)
 
 }
+\references{
+\insertRef{fleishman1978method}{detectnorm}
+}

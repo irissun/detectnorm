@@ -25,6 +25,6 @@ metadat
 }
 \description{
 This dataset contains the individual studies in the meta-analysis
-by Bora et al (2009). They meta-analyzed 38 studies about theory of mind impairement in schizophrenia.
+by \insertCite{bora2009theory;textual}{detectnorm}. They meta-analyzed 38 studies about theory of mind impairement in schizophrenia.
 }
 \keyword{datasets}

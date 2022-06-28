@@ -21,6 +21,13 @@
 #'hi = metadat$p.max[6],showFigure = TRUE)
 #'
 #'@seealso \code{\link{desbeta}}
+#'
+#'@references
+#'\insertRef{shah1966estimation}{detectnorm}
+#'
+#'\insertRef{robert1995simulation}{detectnorm}
+#'
+#'\insertRef{barr1999mean}{detectnorm}
 destrunc <- function(vmean,
                      vsd,
                      lo,
