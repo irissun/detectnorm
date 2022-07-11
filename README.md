@@ -117,57 +117,89 @@ the requirements for package `metafor` only you need to add one or two
 columns for each group about the possible minimum and maximum of the
 data. It will add information including:
 
--   `alpha1`, `beta1`, `alpha2`, and `beta2` are the shape parameters of
-    beta distributions;
+-   `g1_alpha`, `g1_beta`, `g2_alpha`, and `g2_beta` are the shape
+    parameters of beta distributions;
 
--   `mean1`, `sd1.1`, `mean2`, `sd2.1` are the means and standard
+-   `g1_mean`, `g1_sd`, `g2_mean`, `g2_sd` are the means and standard
     deviations of the standard beta distribution (ranged from 0 to 1);
 
--   `skewness1`, `kurtosis1`, `skewness2`, and `kurtosis2` are the
-    skewness and kurtosis of the two groups.
+-   `g1_skewness`, `g1_kurtosis`, `g2_skewness`, and `g2_kurtosis` are
+    the skewness and kurtosis of the two groups.
+
+In this example, it has contained the empirical skewness `skew1` and
+`skew2`, which are calculated from raw data.
 
 ``` r
 library(detectnorm)
-# examine the meta-analysis dataset by Bora et al (2009).
-# Note: it is not exactly the same data as Bora et al (2009) meta-analyzed. 
-# we also computed the cv (i.e., coefficient of variability) for the two groups (cv1 and cv2)
-data(metadat)
-head(metadat)
-#>                   study n1    m1   sd1      cv1 n2    m2  sd2       cv2 p.max
-#> 1 Corcoran et al., 1995 55 15.60 3.900 25.00000 30 18.30 1.60  8.743169    20
-#> 2  Sarfati et al., 1997 24 18.40 6.700 36.41304 24 24.90 2.10  8.433735    28
-#> 3 Sarfati et al., 1999a 25  9.90 3.690 37.27273 15 13.20 0.90  6.818182    14
-#> 4 Sarfati et al., 1999b 26 18.65 6.446 34.56300 13 24.40 2.30  9.426230    28
-#> 5  Russell et al., 2003  5 17.40 5.030 39.92063  7 23.86 3.84 62.337662    30
-#> 6  Kington et al., 2000 16  7.75 1.240 16.00000 16  9.06 0.85  9.381898    10
-#>            d
-#> 1 -0.8219599
-#> 2 -1.3091967
-#> 3 -1.1062829
-#> 4 -1.0534843
-#> 5  1.4786940
-#> 6 -1.2323171
-metadat2 <- detectnorm(m1i = m1,sd1i = sd1,n1i = n1, hi1i = p.max,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2, hi2i = p.max,lo2i=0,distri = "beta", data = metadat)
-head(metadat2)
-#>                   study n1    m1   sd1      cv1 n2    m2  sd2       cv2 p.max
-#> 1 Corcoran et al., 1995 55 15.60 3.900 25.00000 30 18.30 1.60  8.743169    20
-#> 2  Sarfati et al., 1997 24 18.40 6.700 36.41304 24 24.90 2.10  8.433735    28
-#> 3 Sarfati et al., 1999a 25  9.90 3.690 37.27273 15 13.20 0.90  6.818182    14
-#> 4 Sarfati et al., 1999b 26 18.65 6.446 34.56300 13 24.40 2.30  9.426230    28
-#> 5  Russell et al., 2003  5 17.40 5.030 39.92063  7 23.86 3.84 62.337662    30
-#> 6  Kington et al., 2000 16  7.75 1.240 16.00000 16  9.06 0.85  9.381898    10
-#>            d    alpha1    beta1     mean1     sd1.1 skewness1  kurtosis1
-#> 1 -0.8219599 0.7728205 2.740000 0.2200000 0.1950000 1.0418605  0.4569493
-#> 2 -1.3091967 1.0062693 1.928683 0.3428571 0.2392857 0.5322981 -0.6575599
-#> 3 -1.1062829 0.5801587 1.400871 0.2928571 0.2635714 0.7896528 -0.4570207
-#> 4 -1.0534843 1.0674757 2.129243 0.3339286 0.2302143 0.5552562 -0.5804207
-#> 5  1.4786940 3.2194278 4.445877 0.4200000 0.1676667 0.1974639 -0.5095678
-#> 6 -1.2323171 2.3266633 8.014062 0.2250000 0.1240000 0.7188368  0.2672394
-#>      alpha2     beta2      mean2      sd2.1 skewness2 kurtosis2
-#> 1 0.9479492 10.204395 0.08500000 0.08000000 1.5776656 3.0457740
-#> 2 1.8271623 14.676239 0.11071429 0.07500000 1.1220588 1.4840549
-#> 3 0.6878307 11.349206 0.05714286 0.06428571 1.9630607 4.9969845
-#> 4 2.0063462 13.598569 0.12857143 0.08214286 1.0273811 1.1756730
-#> 5 1.8287364  7.106458 0.20466667 0.12800000 0.8439874 0.4762345
-#> 6 1.0140161  9.773389 0.09400000 0.08500000 1.4941173 2.6705274
+# examine the meta-analysis dataset by simulating extremely non-normal distribution
+# population mean1 = 1, mean2 = 1.5, sd1 = sd2=1, skewness1 = 4, kurtosis2 = 2, skewness2=-4, kurtosis2=2
+data("beta_mdat")
+beta1 <- detectnorm(m1i = m1,sd1i = sd1,n1i = n1, hi1i = hi1,lo1i = lo1,m2i = m2,sd2i = sd2,n2i = n2, hi2i = hi2,lo2i=lo2,distri = "beta", data = beta_mdat)
+head(beta1)
+#>   study  n1        m1       sd1       lo1      hi1  n2       m2       sd2
+#> 1     1 160 1.0259203 0.8995642 0.2083603 5.578894 160 1.430021 1.0598447
+#> 2     2  34 1.1528144 1.1367622 0.2123795 4.932592  34 1.408080 0.9296092
+#> 3     3  57 0.9959042 0.8760782 0.2089018 3.443021  57 1.508927 1.0423997
+#> 4     4 155 0.9480018 0.8828343 0.2082652 3.934242 155 1.443682 0.9198336
+#> 5     5 149 1.1162247 1.0968963 0.2081850 5.613920 149 1.444312 1.0826183
+#> 6     6 132 1.0418582 0.8946956 0.2082168 4.301961 132 1.554712 0.7932896
+#>         lo2      hi2    skew1     skew2  g1_alpha  g1_beta   g1_mean     g1_sd
+#> 1 -3.177617 2.274204 1.788613 -2.230054 0.5480186 3.051904 0.1522307 0.1674999
+#> 2 -1.296619 2.271800 1.655752 -1.232207 0.3488177 1.401962 0.1992357 0.2408286
+#> 3 -2.287307 2.274883 1.292354 -1.627030 0.3672680 1.141989 0.2433436 0.2708861
+#> 4 -2.072880 2.274900 1.530104 -1.560090 0.3641696 1.470115 0.1985349 0.2369403
+#> 5 -4.294234 2.274901 1.541182 -2.244364 0.4022054 1.992201 0.1679771 0.2029134
+#> 6 -2.987192 2.273312 1.508507 -2.096631 0.4877450 1.907413 0.2036379 0.2185519
+#>   g1_skewness g1_kurtosis g2_alpha   g2_beta   g2_mean     g2_sd g2_skewness
+#> 1    1.483046   1.8901609 2.081468 0.3813533 0.8451559 0.1944020   -1.591348
+#> 2    1.331854   0.8377363 1.291009 0.4122712 0.7579545 0.2605101   -1.069528
+#> 3    1.079966   0.0309162 1.394623 0.2813890 0.8321080 0.2284867   -1.581618
+#> 4    1.327314   0.8548620 1.985434 0.4693019 0.8088177 0.2115640   -1.310686
+#> 5    1.489420   1.5984400 2.678914 0.3877426 0.8735618 0.1648038   -1.789508
+#> 6    1.234109   0.7489875 3.614481 0.5718672 0.8633971 0.1508011   -1.558126
+#>   g2_kurtosis
+#> 1  2.00489688
+#> 2  0.07531228
+#> 3  1.66667585
+#> 4  1.00447883
+#> 5  3.02270945
+#> 6  2.29997673
+#compare the sample skewness and estimated skewness using beta distribution
+mean(beta1$skew1)#sample skewness calculated from the sample in group 1
+#> [1] 1.687593
+mean(beta1$g1_skewness) #estimated using beta in group 1
+#> [1] 1.384237
+mean(beta1$skew2) #sample skewness calculated from the sample in group 2
+#> [1] -1.687784
+mean(beta1$g2_skewness)#estimated using beta in group 2
+#> [1] -1.411431
+```
+
+``` r
+library(detectnorm)
+data("trun_mdat")
+head(trun_mdat)
+#>   study  n1       m1       sd1          lo1      hi1  n2       m2       sd2
+#> 1     1 199 1.297501 0.8203794 0.0061563102 3.611959 199 1.572915 0.9002734
+#> 2     2  77 1.325658 0.7750929 0.0231261133 2.889290  77 1.597681 0.8782761
+#> 3     3 166 1.212825 0.7460359 0.0158618581 3.607032 166 1.612654 0.8441273
+#> 4     4 120 1.230577 0.7888702 0.0030294235 3.443851 120 1.598539 0.8776627
+#> 5     5 175 1.279821 0.7477283 0.0002848415 3.409888 175 1.612636 0.8426223
+#> 6     6  47 1.310062 0.8904328 0.0088877511 3.729032  47 1.613387 0.8375352
+#>          lo2      hi2     skew1       skew2
+#> 1 0.02056929 3.654732 0.4925754  0.31062433
+#> 2 0.01601133 3.591504 0.3189877  0.31978670
+#> 3 0.02598881 3.944059 0.8236975  0.41657818
+#> 4 0.05609411 3.563257 0.5632971  0.17020660
+#> 5 0.01150730 3.784293 0.4826745  0.20444248
+#> 6 0.04276128 3.137731 0.7678702 -0.02343749
+trun1 <- detectnorm(m1i = m1,sd1i = sd1,n1i = n1, hi1i = 4,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2, hi2i = 4,lo2i= 0,distri = "truncnorm", data = trun_mdat)
+mean(trun1$skew1)#sample skewness calculated from the sample in group 1
+#> [1] 0.5142782
+mean(trun1$g1_skewness)#estimated using truncnorm in group 1
+#> [1] 0.5198264
+mean(trun1$skew2)#sample skewness calculated from the sample in group 2
+#> [1] 0.2023012
+mean(trun1$g2_skewness)#estimated using truncnorm in group 2
+#> [1] 0.254666
 ```

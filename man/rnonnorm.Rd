@@ -2,8 +2,7 @@
 % Please edit documentation in R/rnonnorm.R
 \name{rnonnorm}
 \alias{rnonnorm}
-\title{Non-normal Distribution
-Generating Non-normal data with specified skewness and kurtosis using Fleishman's Method}
+\title{Non-normal Distribution}
 \usage{
 rnonnorm(n, mean = 0, sd = 1, skew = 0, kurt = 0)
 }
@@ -22,6 +21,9 @@ rnonnorm(n, mean = 0, sd = 1, skew = 0, kurt = 0)
 A list of two objects: non-normal data is `dat`; and the other is the Fleishman Coeffficients used to generate the distributions.
 }
 \description{
+Generating Non-normal data with specified skewness and kurtosis using Fleishman's Method
+}
+\details{
 This function can be used to generate non-normal data with specified skewness and kurtosis using Fleishman's Power Method.
 }
 \examples{

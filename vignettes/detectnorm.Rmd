@@ -1,45 +1,31 @@
 ---
-output: github_document
+title: "Using detectnorm in meta-analysis"
+author: "Rong Wei Sun & Shu Fai Cheung"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{quick_start}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{magrittr}
 ---
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  fig.width  =  6,
+  fig.height =  6,
+  fig.align = "center"
 )
 ```
 
-# detectnorm: A Packcage for Detectng Non-normality
-
-<!-- badges: start -->
-<!-- badges: end -->
-
-## Description
-
+## Introduction
 The goal of `detectnorm` is to speculate the skewness and kurtosis based on the Beta and truncated normal distribution. When conducting a meta-analysis for two independent groups, we generally retrieved very limited statistics from primary studies, and it is hard to access the raw data. However, the non-normality of raw data could influence the meta-analytic results greatly (Sun & Cheung, 2020). This package allows meta-analysis researchers to speculate the skewness and kurtosis of the raw data, even without the raw data. Instead of normal distribution, if the researcher believes the population distribution is non-normal, then beta-distribution could be a good choice. If the researcher believes the population distribution is normal but truncated by the measuring ability of the instrument, then truncated normal distribution is a good option. 
 The package provides not only the skewness and kurtosis estimates but also the figures to visualize them. Now, this package could work directly with the standardized mean difference for two independent groups. It also works for one group of data. 
 
-## Documentation
-A good start to understand the problems of non-normality in primary studies on meta-analytic results is the following paper:  
-
-Sun, R. W., & Cheung, S. F. (2020). The influence of nonnormality from primary studies on the standardized mean difference in meta-analysis. *Behavior Research Methods, 52*(4), 1552-1567.
-
-## Installation
-You can install the official version within R with:
-
-```r
-install.packages("detectnorm")
-```
-
-You can also install the development version of `detectnorm` from [GitHub](https://github.com/) with:
-
-``` r
-# install.packages("devtools")
-devtools::install_github("irissun/detectnorm")
+```{r setup}
+library(detectnorm)
 ```
 
 ## Example

@@ -45,9 +45,12 @@ If `showFigure = TRUE`, the output will be a list with two objects: one is the d
 This function can be used to calculate the skewness and kurtosis based on the truncated normal distribution. Also, it can be used to estimate the mean and variance of the parent distribution (the distribution before truncated).
 }
 \examples{
-data("metadat")
-destrunc(vmean=metadat$m2[6], vsd=metadat$sd2[6],
-hi = metadat$p.max[6],showFigure = TRUE)
+data("trun_mdat")
+destrunc(vmean=trun_mdat$m2[6], vsd=trun_mdat$sd2[6],
+hi = 4, lo = 0, showFigure = TRUE)
+#example2
+destrunc(vmean=trun_mdat$m1[17], vsd=trun_mdat$sd1[17],
+hi = 4, lo = 0, showFigure = TRUE)
 
 }
 \references{

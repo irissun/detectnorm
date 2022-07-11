@@ -58,11 +58,20 @@ The output of the data frame adding some columns of the possible skewness and ku
 This function can be used to calculate the skewness and kurtosis based on the Beta distribution with the dataset used to conduct meta-analysis.
 }
 \examples{
-data("metadat")
+#truncated normal data
+data("trun_mdat")
 ex <- detectnorm(m1i = m1,sd1i = sd1,n1i = n1,
-hi1i = p.max,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2,
-hi2i = p.max,lo2i=0,distri = "beta", data = metadat)
+hi1i = 4,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2,
+hi2i = 4,lo2i=0,distri = "truncnorm", data = trun_mdat)
 head(ex)
+#extremely non-normal data
+data("beta_mdat")
+ex2 <- detectnorm(m1i = m1,sd1i = sd1,n1i = n1,
+hi1i = hi1,lo1i = lo1,m2i = m2,sd2i = sd2,n2i = n2,
+hi2i = hi2,lo2i=lo2,distri = "beta", data = beta_mdat)
+head(ex2)
+mean(ex2$skew1)#sample skewness calculated from the sample
+mean(ex2$g1_skewness) #estimated using beta
 }
 \references{
 \insertRef{barr1999mean}{detectnorm}

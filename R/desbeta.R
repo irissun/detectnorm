@@ -13,9 +13,9 @@
 #'@import ggplot2
 #'@export
 #'@examples
-#'data('metadat')
-#'desbeta(vmean=metadat$m2[6], vsd=metadat$sd2[6],
-#'hi = metadat$p.max[6], lo = 0, showFigure = TRUE)
+#'data('beta_mdat')
+#'desbeta(vmean=beta_mdat$m2[6], vsd=beta_mdat$sd2[6],
+#'hi = beta_mdat$hi2[6], lo = beta_mdat$lo2[6], showFigure = TRUE)
 #'
 #'@seealso \code{\link{destrunc}}
 #'

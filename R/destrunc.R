@@ -16,9 +16,12 @@
 #'@return If `showFigure = TRUE`, the output will be a list with two objects: one is the data frame of parent mean and standard deviation (pmean and psd), mean and standard deviation of truncated normal distribution (mean and sd), and skewness and kurtosis; the other is the theoretical figures of beta and normal distributions. If `showFigure = FALSE`, the output will be only the data frame.
 #'@export
 #'@examples
-#'data("metadat")
-#'destrunc(vmean=metadat$m2[6], vsd=metadat$sd2[6],
-#'hi = metadat$p.max[6],showFigure = TRUE)
+#'data("trun_mdat")
+#'destrunc(vmean=trun_mdat$m2[6], vsd=trun_mdat$sd2[6],
+#'hi = 4, lo = 0, showFigure = TRUE)
+#'#example2
+#'destrunc(vmean=trun_mdat$m1[17], vsd=trun_mdat$sd1[17],
+#'hi = 4, lo = 0, showFigure = TRUE)
 #'
 #'@seealso
 #'\code{\link{desbeta}}

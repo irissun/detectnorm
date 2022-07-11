@@ -29,8 +29,11 @@ Imports:
     truncnorm,
     Rdpack
 Suggests:
+    knitr,
     metafor,
+    rmarkdown,
     testthat (>= 3.0.0)
 RdMacros: Rdpack
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Config/testthat/edition: 3
+VignetteBuilder: knitr
