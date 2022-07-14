@@ -87,7 +87,7 @@ desbeta <- function(vmean, vsd, lo, hi, method = "MM", rawdata = NULL,
                       strip.background = element_rect(colour = "black",
                                                       fill = "white"))
         } else{
-            fig <- ggplot(data.frame(x = c(lo, hi)), aes(x = x)) +
+            fig <- ggplot2::ggplot(data.frame(x = c(lo, hi)), aes(x = x)) +
                 stat_function(fun = dnorm, args = list(vmean, vsd), colour = "blue") +
                 stat_function(fun = dbeta4param, args =
                                   list(alpha = balpha, beta = bbeta, hi = hi, lo = lo),

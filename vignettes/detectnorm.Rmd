@@ -4,10 +4,9 @@ author: "Rong Wei Sun & Shu Fai Cheung"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{quick_start}
+  %\VignetteIndexEntry{Using detectnorm in meta-analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{magrittr}
 ---
 
 ```{r, include = FALSE}

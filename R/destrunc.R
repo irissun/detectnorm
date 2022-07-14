@@ -130,7 +130,7 @@ destrunc <- function(vmean,
                     sep = "")
     if(!is.null(data)){
       ynames <- paste(ynames, sep="")
-      fig <- ggplot(data.frame(x = rawdata),
+      fig <- ggplot2::ggplot(data.frame(x = rawdata),
                     aes(x = rawdata)) +
         geom_histogram(aes(y=..density..), colour = "black", fill = "white",
                        bins = (hi - lo)-1, boundary = 0) +
@@ -148,7 +148,7 @@ destrunc <- function(vmean,
               strip.background = element_rect(colour = "black",
                                               fill = "white"))
     } else{
-      fig <- ggplot(data.frame(x = c(lo, hi)), aes(x = x)) +
+      fig <- ggplot2::ggplot(data.frame(x = c(lo, hi)), aes(x = x)) +
         stat_function(fun = dnorm, args = list(vmean, vsd),
                       colour = "blue")+
         stat_function(fun = dtruncnorm, args = list(a=lo, b=hi,

@@ -21,7 +21,8 @@
 #'@importFrom stats dnorm pnorm sd density
 #'@importFrom utils data
 #'@import ggplot2
-#'
+#'@import Rdpack
+#'@importFrom psych skew
 #'@examples
 #'#truncated normal data
 #'data("trun_mdat")
@@ -62,12 +63,9 @@ detectnorm <- function(m1i,sd1i,n1i, lo1i, hi1i,
   if (is.null(data)) {
     data <- data.frame(m1i = m1i, sd1i = sd1i, n1i = n1i, lo1i = lo1i, hi1i = hi1i,
                        m2i = m2i, sd2i = sd2i, n2i = n2i, lo2i = lo2i, hi2i = hi2i)
-  } else {
-    if(!is.data.frame(data))
-      data <- data.frame(data)
-  }
-  arg <- match.call()
-  if (!is.null(data)) {
+  } else if (!is.null(data)) {
+    data <- data.frame(data)
+    arg <- match.call()
     m1i <- data[[arg$m1i]]
     m2i <- data[[arg$m2i]]
     sd1i <- data[[arg$sd1i]]

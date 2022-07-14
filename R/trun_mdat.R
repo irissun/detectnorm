@@ -18,4 +18,5 @@
 #'   \item{skew1}{sample skewness for group 1. }
 #'   \item{skew2}{sammple skewness for group 2. }
 #' }
+#'
 "trun_mdat"

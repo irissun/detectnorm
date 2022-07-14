@@ -27,10 +27,11 @@ Imports:
     nleqslv,
     ggplot2,
     truncnorm,
-    Rdpack
+    Rdpack,
+    psych
 Suggests:
     knitr,
-    metafor,
+    metafor (>= 3.4-0),
     rmarkdown,
     testthat (>= 3.0.0)
 RdMacros: Rdpack

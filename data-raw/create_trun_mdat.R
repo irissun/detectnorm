@@ -1,6 +1,7 @@
 # Generating meta-analytic data with non-normality using truncated distributions
 # 40 studies
 # population mean1 = 1, mean2 = 1.5, sd1=sd2=1, studies using scale 0-4
+
 k <- 40 # study size
 set.seed(54208)
 nlist <- as.integer(stats::runif(n = k, min = 20, max = 200))
