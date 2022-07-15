@@ -107,6 +107,8 @@ destrunc <- function(vmean,
   d2l <- dnorm(h1l); d2u <- dnorm(h1u)
   p2l <- pnorm(h1l);	p2u <- pnorm(h1u)
   z1 <- d2u/(p2u - p2l); z0 <- d2l/(p2u - p2l)
+  pmean <- ans$x[[1]]
+  psd <- ans$x[[2]]
   # The expected mean, variance, skewness and kurtosis for truncated distribution
   m1 <- ans$x[[1]] - ans$x[[2]]*(z1-z0)
   sd1 <- ans$x[[2]]*sqrt(1 - (h1u*z1 - h1l*z0) - (z1 - z0)^2)
@@ -128,7 +130,7 @@ destrunc <- function(vmean,
                     ",kurt=", round(result$kurt, 3),
                     "; red-trunc; blue-normal",
                     sep = "")
-    if(!is.null(data)){
+    if(!is.null(rawdata)){
       ynames <- paste(ynames, sep="")
       fig <- ggplot2::ggplot(data.frame(x = rawdata),
                     aes(x = rawdata)) +
