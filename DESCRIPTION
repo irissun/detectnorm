@@ -1,7 +1,7 @@
 Package: detectnorm
 Type: Package
 Title: Detect Nonnormality in Meta-Analysis without Raw Data
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: c(person(given="Rongwei", 
                     family="Sun", 
                     role = c("aut", "cre", "cph"),
