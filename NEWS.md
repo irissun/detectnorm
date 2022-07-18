@@ -1,3 +1,11 @@
+---
+title: "Package News"
+output:
+  html_document:
+    toc: yes
+pagetitle: News
+---
+
 # detectnorm 1.0.0.9000
 
  This is a new package that works for meta-analysis with two independent groups, as well as primary studies. You can check the nonnormality with only mean, standard deviation, minimum and maximum. The minimum and maximum don't need to be the sample minimum and sample maximum. It could be the scale range. There are three main functions to the package:
