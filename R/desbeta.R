@@ -25,7 +25,8 @@
 #'\insertRef{smithson2006better}{detectnorm}
 #'
 desbeta <- function(vmean, vsd, lo, hi, method = "MM", rawdata = NULL,
-                    showFigure = FALSE, ...) {
+                    showFigure = FALSE, design = "independent",
+                    cor_xy, ...) {
     if(!is.null(rawdata)){
         vmean <- mean(rawdata, is.na = TRUE)
         print(paste("mean is ", vmean, sep=""))
@@ -45,11 +46,12 @@ desbeta <- function(vmean, vsd, lo, hi, method = "MM", rawdata = NULL,
         lo <- lo
         hi <- hi
     }
-  if(vsd == 0){vsd <- .01}
+  #if(vsd == 0){vsd <- .01}
     vrange <- hi - lo
     bmean <- (vmean - lo)/vrange
     bv <- (vsd^2)/(vrange^2)
     d <- (1 - bmean)/bmean
+    if(design == "independent"){
     # Method of moments
     balpha <- bmean * (bmean * (1 - bmean)/bv - 1)
     bbeta <- balpha * d
@@ -66,6 +68,41 @@ desbeta <- function(vmean, vsd, lo, hi, method = "MM", rawdata = NULL,
     }
     result <- data.frame(alpha = balpha, beta = bbeta, mean = bmean, sd = sqrt(bv),
         skewness = bskew, kurtosis = bkurtosis)
+    }
+    if(design == "dependent" & length(vmean) == 2 & length(vsd) == 2
+       & length(hi) == 2 & length(lo)==2 & !is.null(cor_xy)){
+      vrange <- hi - lo
+      bmean <- (vmean - lo)/vrange
+      bsd <- vsd/vrange
+      mod_dir <- function(x){
+        f <- numeric(4)
+        m <- x[1] + x[2] + x[3] + x[4]
+        f[1] = (x[1] + x[2])/m - bmean[1]
+        f[2] = (x[1] + x[3])/m - bmean[2]
+        f[3] = (x[1] + x[2])*(x[4] + x[3])/(m^2*(m+1)) - bsd[1]^2
+        #f[4] = (x[1] + x[3])*(x[4] + x[2])/(m^2*(m+1)) - sd2^2
+        f[4] = (x[1]*x[4] - x[2]*x[3])/sqrt((x[1]+x[2])*(x[1] + x[3])*
+                                              (x[4] +x[3])*(x[4]+x[2])) - cor_xy
+        f
+      }
+      xstart <- c(.1, .1, .1, .1)
+      ans <- as.data.frame(nleqslv(xstart, mod_dir, method = "Newton"))
+      beta_fun <- function(a, b){
+        m <- a + b
+        bmean <- a/(a+b)
+        bsd <- sqrt(a*b/(m^2*(m+1)))
+        bskew <- 2*(b-a)*sqrt(a+b+1)/((a+b+2)*sqrt(a*b))
+        bkurt <- 6*((b - a)^2*(a+b+1) - a*b*(a+b+2))/(a*b*(a+b+2)*(a+b+3))
+        return(data.frame(bmean, bsd, bskew, bkurt))
+      }
+      g1 <-  beta_fun(a = ans$x[1] + ans$x[2], b = ans$x[3] + ans$x[4])
+      g2 <- beta_fun(a = ans$x[1] + ans$x[3], b = ans$x[2] + ans$x[4])
+      result <- data.frame(alpha11= ans$x[1], alpha10 = ans$x[2],
+                           alpha01 = ans$x[3], alpha00 = ans$x[4],
+                           g1mean = g1$bmean, g1sd = g1$bsd, g1skew = g1$bskew,
+                           g1kurt = g1$bskew, g2mean = g2$bmean,g2sd = g2$bsd,
+                           g2skew = g2$bskew, g2kurt = g2$bkurt)
+    }
     if (showFigure == TRUE) {
         ynames <- paste("skew=", round(bskew, 3), ", kurt=", round(bkurtosis,
             3), "; red-beta; blue-normal",sep = "" )
