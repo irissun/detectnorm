@@ -13,7 +13,6 @@
 #'@param lo2i vector to specify the possible minimum of the second group
 #'@param hi2i vector to specify the possible maximum of the second group
 #'@param distri Beta distribution is used when using `distri = "beta"`; Truncated normal distribution is used when using `distri = "truncnorm"`
-#'@param data the opitional original data frame containing the data for the function
 #'@param showFigure when showFigure = TRUE, it will display all the plots (within the result as a list, result$fig) with theoretical normal curve and the truncated normal curve.
 #'@param ... other arguments
 #'@return The output of the data frame adding some columns of the possible skewness and kurtosis for each groups.
@@ -53,7 +52,6 @@
 #'
 detectnorm <- function(m1i,sd1i,n1i, lo1i, hi1i,
                         m2i, sd2i, n2i, lo2i, hi2i,
-                        data,
                         showFigure = FALSE,
                         distri = "beta",
                         ...) {
