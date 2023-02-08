@@ -46,6 +46,7 @@ desbeta_dep <- function(vmean = vmean, vsd = vsd, lo = lo,
                     round(dat$g1kurt,3),
                     "\nGroup 2 (dashed): skew2=", round(dat$g2skew, 3), ", kurt2=",
                     round(dat$g2kurt,3),
+                    "\n Correlation = ", cor_xy,
                     "\n red-beta; blue-normal" ,sep = "" )
     fig <- ggplot2::ggplot(data.frame(result)) +
       stat_function(fun = dnorm, args = list(vmean[[1]], vsd[[1]]),
