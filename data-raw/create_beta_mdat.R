@@ -19,3 +19,4 @@ for(i in 1:40){
 #' need to revise detectnorm
 beta_mdat <- do.call(rbind, datlist)
 usethis::use_data(beta_mdat, compress = "xz")
+

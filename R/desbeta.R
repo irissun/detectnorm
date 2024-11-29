@@ -1,15 +1,12 @@
-#' Calculate skewness and kurtosis based on Beta distribution in two group
+#' Estimate skewness and kurtosis based on Beta distribution in one sample
 #'
 #'This function can be used to calculate the skewness and kurtosis based on the Beta distribution. Also, this function estimate the shape parameters alpha and beta.
 #'@param vmean sample mean of the beta distributed data
 #'@param vsd sample standard deviation of the beta distributed data
 #'@param lo minimum possible value
 #'@param hi maximum possible value
-#'@param design specify if the two groups are independent or dependent.
-#'@param cor_xy specify the correlations between the two groups when they are dependent.
-#'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.
+#'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal and beta curves.
 #'@param ... other arguments
-#'@return If `showFigure = TRUE`, the output will be a list with two objects: one is the data frame of shape parameters (alpha and beta), mean and standard deviation of standard beta distribution (mean and sd), and skewness and kurtosis; the other is the theoretical figures of beta and normal distributions of the two groups. If `showFigure = FALSE`, the output will be only the data frame.
 #'@import ggplot2
 #'@export
 #'@examples
@@ -26,16 +23,59 @@
 #'
 #'\insertRef{olkin2014cons}{detectnorm}
 #'
-desbeta <- function(vmean, vsd, lo, hi, cor_xy,
-                    design = c("independent", "dependent"),
+desbeta <- function(vmean,
+                    vsd,
+                    lo,
+                    hi,
+                    rawdata = NULL,
                     showFigure = FALSE,
                      ...) {
-  design <- match.arg(design)
-  switch(design,
-         independent = out <- desbeta_ind(vmean = vmean, vsd = vsd, lo = lo,
-                                          hi = hi, showFigure = showFigure, ...),
-         dependent = out <- desbeta_dep(vmean = vmean, vsd = vsd, lo = lo,
-                                        hi = hi, showFigure = showFigure,
-                                        cor_xy = cor_xy, ...))
-  out
+  if(is.null(rawdata) == FALSE){
+    vmean = mean(rawdata, ...)
+    vsd = sd(rawdata, ...)
+    lo = min(rawdata, ...)
+    hi = max(rawdata, ...)
+  }
+  vrange <- hi - lo
+  bmean <- (vmean - lo)/vrange
+  bv <- (vsd^2)/(vrange^2)
+  bsd <- sqrt(bv)
+  d <- (1 - bmean)/bmean
+  # Method of moments
+  balpha <- bmean * (bmean * (1 - bmean)/bv - 1)
+  bbeta <- balpha * d
+  bskew <- 2 * (bbeta - balpha) * sqrt(bbeta + balpha + 1)
+  bskew <- bskew/((bbeta + balpha + 2) * sqrt(bbeta * balpha))
+  a1 <- ((balpha - bbeta)^2) * (balpha + bbeta + 1)
+  a2 <- bbeta * balpha * (bbeta + balpha + 2)
+  b1 <- balpha * bbeta * (balpha + bbeta + 2) * (balpha + bbeta + 3)
+  bkurt <- 6 * (a1 - a2)/b1
+
+
+  final_result <- data.frame(bmean = bmean, bsd = bsd,
+                             balpha = balpha, bbeta = bbeta,
+                             bskew = bskew, bkurt = bkurt)
+  if (showFigure == TRUE) {
+    ynames <- paste("skew =", round(final_result$bskew, 3), ", kurt =",
+                    round(final_result$bkurt,3),
+                    " red-beta; blue-normal" ,sep = "")
+    fig <- ggplot2::ggplot(final_result) +
+      stat_function(fun = dnorm, args = list(vmean, vsd),
+                    colour = "blue", na.rm = TRUE) +
+      stat_function(fun = .dbeta4param,
+                    args = list(alpha = balpha, beta = bbeta,
+                                lo = lo, hi = hi),
+                    colour = "red",
+                    na.rm = TRUE) +
+      scale_y_continuous(limits = c(0, 1.2)) +
+      scale_x_continuous(limits = c(lo , hi)) +
+      labs(title = ynames, y = "density", x = "x") +
+      theme(panel.background = element_rect(fill = "white",
+                                            colour = "grey50"),
+            legend.position = "bottom",
+            strip.background = element_rect(colour = "black",
+                                            fill = "white"))
+    print(fig)
+  }
+  return(final_result)
 }

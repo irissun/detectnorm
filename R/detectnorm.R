@@ -1,17 +1,19 @@
-#' @title Calculate skewness and kurtosis based on Beta or truncated normal distribution in a meta-analysis for SMD (Two independent groups)
+#'@title Calculate skewness and kurtosis based on Beta distribution in a meta-analysis for SMD (Two independent or dependent groups)
 #'
-#' @description This function can be used to calculate the skewness and kurtosis based on the Beta distribution with the dataset used to conduct meta-analysis.
-#' @encoding UTF-8
-#'@param m1i vector to the means of first group
-#'@param sd1i vector to specifiy the standard deviation of first group
-#'@param n1i vector to specify the sample size of first group
-#'@param lo1i vector to specify the possible minimum of the first group
-#'@param hi1i vector to specify the possible maximum of the first group
-#'@param m2i vector to the means of second group
-#'@param sd2i vector to specifiy the standard deviation of second group
-#'@param n2i vector to specify the sample size of second group
-#'@param lo2i vector to specify the possible minimum of the second group
-#'@param hi2i vector to specify the possible maximum of the second group
+#'@description This function can be used to calculate the skewness and kurtosis based on the Beta distribution with the dataset used to conduct meta-analysis.
+#'@encoding UTF-8
+#'@param m1 vector to the means of first group
+#'@param sd1 vector to specifiy the standard deviation of first group
+#'@param n1 vector to specify the sample size of first group
+#'@param lo1 vector to specify the possible minimum of the first group
+#'@param hi1 vector to specify the possible maximum of the first group
+#'@param m2 vector to the means of second group
+#'@param sd2 vector to specifiy the standard deviation of second group
+#'@param n2 vector to specify the sample size of second group
+#'@param lo2 vector to specify the possible minimum of the second group
+#'@param hi2 vector to specify the possible maximum of the second group
+#'@param design specify if the two groups are independent or dependent.
+#'@param cor_xy specify the correlations between the two groups when they are dependent.
 #'@param distri Beta distribution is used when using `distri = "beta"`; Truncated normal distribution is used when using `distri = "truncnorm"`
 #'@param showFigure when showFigure = TRUE, it will display all the plots (within the result as a list, result$fig) with theoretical normal curve and the truncated normal curve.
 #'@param ... other arguments
@@ -50,84 +52,102 @@
 #'
 #'\insertRef{sun2020influence}{detectnorm}
 #'
-detectnorm <- function(m1i,sd1i,n1i, lo1i, hi1i,
-                        m2i, sd2i, n2i, lo2i, hi2i,
-                        showFigure = FALSE,
-                        distri = "beta",
+detectnorm <- function(m1, m2,
+                       sd1, sd2,
+                       hi1,hi2, lo1, lo2,
+                       cor_xy,
+                       distri = "beta",
+                       design = "ind",
+                       metadat = NULL,
+                       showFigure = FALSE,
                         ...) {
-  if (missing(data))
-    data <- NULL
-  no.data <- is.null(data)
-  if (is.null(data)) {
-    data <- data.frame(m1i = m1i, sd1i = sd1i, n1i = n1i, lo1i = lo1i, hi1i = hi1i,
-                       m2i = m2i, sd2i = sd2i, n2i = n2i, lo2i = lo2i, hi2i = hi2i)
-  } else if (!is.null(data)) {
-    data <- data.frame(data)
-    arg <- match.call()
-    m1i <- data[[arg$m1i]]
-    m2i <- data[[arg$m2i]]
-    sd1i <- data[[arg$sd1i]]
-    sd2i <- data[[arg$sd2i]]
-    n1i <- data[[arg$n1i]]
-    n2i <- data[[arg$n2i]]
-    if(is.numeric(arg$lo1i)){lo1i <- rep(arg$lo1i, length(m1i))} else{
-      lo1i <- data[[arg$lo1i]]
+  if(is.null(metadat) == FALSE & is.data.frame(metadat) == TRUE){
+    m1 <- eval(substitute(m1), metadat)
+    m2 <- eval(substitute(m2), metadat)
+    sd1 <- eval(substitute(sd1), metadat)
+    sd2 <- eval(substitute(sd2), metadat)
+    hi1 <- eval(substitute(hi1), metadat)
+    hi2 <- eval(substitute(hi2), metadat)
+    lo1 <- eval(substitute(lo1), metadat)
+    lo2 <- eval(substitute(lo2), metadat)
+    cor_xy <- eval(substitute(cor_xy), metadat)
+    if(length(cor_xy) == 1) {
+      cor_xy <- rep(cor_xy, length(m1))
     }
-    if(is.numeric(arg$lo2i)){lo2i <- rep(arg$lo2i, length(m1i))} else{
-      lo2i <- data[[arg$lo2i]]
+    design <- eval(substitute(design), metadat)
+    if(length(design) == 1) {
+      design <- rep(design, length(m1))
     }
-    if(is.numeric(arg$hi1i)){hi1i <- rep(arg$hi1i, length(m1i))} else{
-      hi1i <- data[[arg$hi1i]]
+
+    final_dat <- list()
+    figure <- list()
+    for(i in 1:nrow(metadat)){
+      if(distri == "beta"){
+        if(is.na(cor_xy[[i]]) | design[[i]] == "ind"){
+          #independent design
+          if(showFigure == TRUE){
+            indat <- des2beta(vmean=c(m1[[i]], m2[[i]]), vsd=c(sd1[[i]], sd2[[i]]),
+                              hi = c(hi1[[i]], hi2[[i]]), lo = c(lo1[[i]], lo2[[i]]),
+                              design = design[[i]], showFigure = TRUE)
+            figure[[i]] <- indat[[2]]
+            indat <- indat[[1]]
+          } else if(showFigure == FALSE){
+            indat <- des2beta(vmean=c(m1[[i]], m2[[i]]), vsd=c(sd1[[i]], sd2[[i]]),
+                              hi = c(hi1[[i]], hi2[[i]]), lo = c(lo1[[i]], lo2[[i]]),
+                              design = design[[i]])
+          }
+
+          tail <- ifelse(m1[[i]] < m2[[i]] & indat$g1skew >0 & indat$g2skew < 0, "toward",
+          ifelse(m1[[i]] > m2[[i]] & indat$g1skew < 0 & indat$g2skew > 0, "toward", "away"))
+          final_dat[[i]] <- c(indat$g1skew, indat$g1kurt,
+                              indat$g2skew, indat$g2kurt,
+                              tail)
+        } else if(!is.na(cor_xy[[i]]) & design[[i]] == "dep"){
+          #dependent design
+          if(showFigure == TRUE){
+            depdat <- des2beta(vmean=c(m1[[i]], m2[[i]]), vsd=c(sd1[[i]], sd2[[i]]),
+                               hi = c(hi1[[i]], hi2[[i]]), lo = c(lo1[[i]], lo2[[i]]),
+                               cor_xy = cor_xy[[i]], design = design[[i]],
+                               showFigure = TRUE)
+            figure[[i]] <- depdat[[2]]
+            depdat <- depdat[[1]]
+          } else if(showFigure == FALSE){
+            depdat <- des2beta(vmean=c(m1[[i]], m2[[i]]), vsd=c(sd1[[i]], sd2[[i]]),
+                               hi = c(hi1[[i]], hi2[[i]]), lo = c(lo1[[i]], lo2[[i]]),
+                               cor_xy = cor_xy[[i]], design = design[[i]])
+          }
+          tail <- ifelse(m1[[i]] < m2[[i]] & depdat$g1skew >0 & depdat$g2skew < 0, "toward",
+                         ifelse(m1[[i]] > m2[[i]] & depdat$g1skew < 0 & depdat$g2skew > 0, "toward", "away"))
+          final_dat[[i]] <- c(depdat$g1skew, depdat$g1kurt, depdat$g2skew, depdat$g2kurt, tail)
+        } else {
+          warning("Check the design and cor_xy. If independent, specify cor_xy as NA.")
+        }
+      } else if(distri == "trunc"){
+        if(is.na(cor_xy[[i]]) & design[[i]] == "ind"){
+          #independent design
+          if(showFigure == TRUE){
+            indat <- des2trunc(vmean=c(m1[[i]], m2[[i]]), vsd=c(sd1[[i]], sd2[[i]]),
+                              hi = c(hi1[[i]], hi2[[i]]), lo = c(lo1[[i]], lo2[[i]]),
+                              showFigure = TRUE)
+            figure[[i]] <- indat[[2]]
+            indat <- indat[[1]]
+          } else if(showFigure == FALSE){
+            indat <- des2trunc(vmean=c(m1[[i]], m2[[i]]), vsd=c(sd1[[i]], sd2[[i]]),
+                               hi = c(hi1[[i]], hi2[[i]]), lo = c(lo1[[i]], lo2[[i]]))
+          }
+          tail <- ifelse(m1[[i]] < m2[[i]] & indat$g1skew >0 & indat$g2skew < 0, "toward",
+                         ifelse(m1[[i]] > m2[[i]] & indat$g1skew < 0 & indat$g2skew > 0, "toward", "away"))
+          final_dat[[i]] <- c(indat$g1skew, indat$g1kurt, indat$g2skew, indat$g2kurt, tail)
+
+        } else {
+          warning("The function for correlated truncated distribution is under development.")
+        }
+      }
     }
-    if(is.numeric(arg$hi2i)){hi2i <- rep(arg$hi2i, length(m1i))} else{
-      hi2i <- data[[arg$hi2i]]
-    }
+   final_dat <- data.frame(do.call(rbind, final_dat))
+   colnames(final_dat) <- c("g1skew", "g1kurt", "g2skew", "g2kurt", "check_tail")
+   final_dat <- cbind(metadat, final_dat)
+   if(showFigure == TRUE) final_dat <- list(final_dat = final_dat, figure = figure)
   }
-  finalre1 <- list()
-  finalre2 <- list()
-  fig1 <- list()
-  fig2 <- list()
-  if (distri == "beta") {
-    distri <- 'desbeta'
-    distri <- get(distri)
-  } else if (distri == "truncnorm"){
-    distri <- 'destrunc'
-    distri <- get(distri)
-  } else {
-    distri <- get(distri)
-  }
-  if (showFigure == TRUE) {
-    for (i in 1:nrow(data)) {
-      g1 <- do.call(distri, list(m1i[[i]], sd1i[[i]], lo1i[[i]],hi1i[[i]],
-                                 showFigure=TRUE))
-      finalre1[[i]] <- g1$dat
-      fig1[[i]] <- g1$fig + labs(title = paste("Group 1 in Study ",
-                                               i, sep = ""))
-      g2 <- do.call(distri, list(m2i[[i]], sd2i[[i]], lo2i[[i]], hi2i[[i]],
-                                 showFigure=TRUE))
-      finalre2[[i]] <- g2$dat
-      fig2[[i]] <- g2$fig + labs(title = paste("Group 2 in Study ",
-                                               i, sep = ""))
-    }
-    finalre1 <- do.call(rbind, finalre1)
-    colnames(finalre1) <- paste(colnames(finalre1), 1, sep = "")
-    finalre2 <- do.call(rbind, finalre2)
-    colnames(finalre2) <- paste(colnames(finalre2), 2, sep = "")
-    finalre <- cbind(finalre1, finalre2)
-    fig <- list(fig1, fig2)
-    dat <- data.frame(data, finalre)
-    dat <- list(dat = data, fig = fig)
-  } else {
-    for (i in 1:nrow(data)) {
-      finalre1[[i]] <- do.call(distri, list(m1i[[i]], sd1i[[i]],  lo1i[[i]], hi1i[[i]]))
-      finalre2[[i]] <- do.call(distri, list(m2i[[i]], sd2i[[i]], lo2i[[i]], hi2i[[i]]))
-    }
-    finalre1 <- do.call(rbind, finalre1)
-    colnames(finalre1) <- paste("g1_", colnames(finalre1), sep = "")
-    finalre2 <- do.call(rbind, finalre2)
-    colnames(finalre2) <- paste("g2_", colnames(finalre2), sep = "")
-    finalre <- cbind(finalre1, finalre2)
-    dat <- data.frame(data, finalre)
-  }
-  return(dat)
+  return(final_dat)
 }

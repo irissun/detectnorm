@@ -1,7 +1,7 @@
 Package: detectnorm
 Type: Package
 Title: Detect Nonnormality in Meta-Analysis without Raw Data
-Version: 1.0.0.9000
+Version: 1.0.1
 Authors@R: c(person(given="Rongwei", 
                     family="Sun", 
                     role = c("aut", "cre", "cph"),
@@ -35,6 +35,6 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0)
 RdMacros: Rdpack
-RoxygenNote: 7.2.0
+RoxygenNote: 7.3.1
 Config/testthat/edition: 3
 VignetteBuilder: knitr
