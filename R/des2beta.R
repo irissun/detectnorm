@@ -8,6 +8,8 @@
 #'@param lo a vector of two minimum possible value
 #'@param hi a vector of two maximum possible value
 #'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal and beta curves.
+#'@param design if design = "ind", the two groups are independent; if design = "dep", the two groups are dependent
+#'@param cor_xy if design = "dep", the correlation between the two groups needs to be provided for further analysis.
 #'@param ... other arguments
 #'@import nleqslv
 #'@export

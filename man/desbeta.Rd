@@ -2,18 +2,9 @@
 % Please edit documentation in R/desbeta.R
 \name{desbeta}
 \alias{desbeta}
-\title{Calculate skewness and kurtosis based on Beta distribution in two group}
+\title{Estimate skewness and kurtosis based on Beta distribution in one sample}
 \usage{
-desbeta(
-  vmean,
-  vsd,
-  lo,
-  hi,
-  cor_xy,
-  design = c("onegroup", "independent", "dependent"),
-  showFigure = FALSE,
-  ...
-)
+desbeta(vmean, vsd, lo, hi, showFigure = FALSE, ...)
 }
 \arguments{
 \item{vmean}{sample mean of the beta distributed data}
@@ -24,16 +15,9 @@ desbeta(
 
 \item{hi}{maximum possible value}
 
-\item{cor_xy}{specify the correlations between the two groups when they are dependent.}
-
-\item{design}{specify if the two groups are independent or dependent.}
-
-\item{showFigure}{when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.}
+\item{showFigure}{when showFigure = TRUE, it will display the plots with theoretical normal and beta curves.}
 
 \item{...}{other arguments}
-}
-\value{
-If `showFigure = TRUE`, the output will be a list with two objects: one is the data frame of shape parameters (alpha and beta), mean and standard deviation of standard beta distribution (mean and sd), and skewness and kurtosis; the other is the theoretical figures of beta and normal distributions of the two groups. If `showFigure = FALSE`, the output will be only the data frame.
 }
 \description{
 This function can be used to calculate the skewness and kurtosis based on the Beta distribution. Also, this function estimate the shape parameters alpha and beta.

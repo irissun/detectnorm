@@ -27,15 +27,8 @@ desbeta <- function(vmean,
                     vsd,
                     lo,
                     hi,
-                    rawdata = NULL,
                     showFigure = FALSE,
                      ...) {
-  if(is.null(rawdata) == FALSE){
-    vmean = mean(rawdata, ...)
-    vsd = sd(rawdata, ...)
-    lo = min(rawdata, ...)
-    hi = max(rawdata, ...)
-  }
   vrange <- hi - lo
   bmean <- (vmean - lo)/vrange
   bv <- (vsd^2)/(vrange^2)

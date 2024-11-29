@@ -8,6 +8,8 @@
 #'@param lo minimum possible value
 #'@param hi maximum possible value
 #'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal and beta curves.
+#'@param xstart arguments used for \code{nleqslv} to solve the equations.
+#'@param control arguments used for \code{nleqslv} to solve the equations.
 #'@param ... other arguments
 #'@import nleqslv
 #'@export
@@ -22,17 +24,10 @@ destrunc <- function(vmean,
                       vsd,
                       lo,
                       hi,
-                      rawdata = NULL,
                       showFigure = FALSE,
                       xstart = c(vmean, vsd),
                       control = list(allowSingular = TRUE),
                       ...){
-  if(is.null(rawdata) == FALSE){
-    vmean = mean(rawdata, ...)
-    vsd = sd(rawdata, ...)
-    lo = min(rawdata, ...)
-    hi = max(rawdata, ...)
-  }
   if(missing(lo)){lo <- 0} else{lo <- lo}
   if(vsd == 0){vsd <- .01}
   #To gain the mean and SD of the parent distribution
@@ -94,7 +89,7 @@ destrunc <- function(vmean,
     fig <- ggplot2::ggplot(data.frame(result)) +
       stat_function(fun = dnorm, args = list(vmean, vsd),
                     colour = "blue", na.rm = TRUE) +
-      stat_function(fun = dtruncnorm, args = list(a=lo, b=hi,
+      stat_function(fun = truncnorm::dtruncnorm, args = list(a=lo, b=hi,
                                                   mean=pmean,
                                                   sd=psd),
                     na.rm = TRUE, colour = "red")+

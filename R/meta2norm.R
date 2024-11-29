@@ -4,17 +4,16 @@
 #'@encoding UTF-8
 #'@param m1 vector to the means of first group
 #'@param sd1 vector to specifiy the standard deviation of first group
-#'@param n1 vector to specify the sample size of first group
 #'@param lo1 vector to specify the possible minimum of the first group
 #'@param hi1 vector to specify the possible maximum of the first group
 #'@param m2 vector to the means of second group
 #'@param sd2 vector to specifiy the standard deviation of second group
-#'@param n2 vector to specify the sample size of second group
 #'@param lo2 vector to specify the possible minimum of the second group
 #'@param hi2 vector to specify the possible maximum of the second group
 #'@param design specify if the two groups are independent or dependent.
 #'@param cor_xy specify the correlations between the two groups when they are dependent.
 #'@param distri Beta distribution is used when using `distri = "beta"`; Truncated normal distribution is used when using `distri = "truncnorm"`
+#'@param metadat The data.frame of meta-analytic data with means, stantand deviations, minimums, maximums, design (specify whether "dep" or "ind"), and correlations (for dependent two groups).
 #'@param showFigure when showFigure = TRUE, it will display all the plots (within the result as a list, result$fig) with theoretical normal curve and the truncated normal curve.
 #'@param ... other arguments
 #'@return The output of the data frame adding some columns of the possible skewness and kurtosis for each groups.
@@ -27,18 +26,18 @@
 #'@examples
 #'#truncated normal data
 #'data("trun_mdat")
-#'ex <- detectnorm(m1i = m1,sd1i = sd1,n1i = n1,
-#'hi1i = 4,lo1i = 0,m2i = m2,sd2i = sd2,n2i = n2,
-#'hi2i = 4,lo2i=0,distri = "truncnorm", data = trun_mdat)
+#'ex <- meta2norm(m1 = m1,sd1 = sd1, hi1 = hi1, lo1 = lo1,
+#'m2 = m2, sd2 = sd2, hi2 = hi2, lo2 = lo2, distri = "trunc",
+#'metadat = trun_mdat)
 #'head(ex)
 #'#extremely non-normal data
 #'data("beta_mdat")
-#'ex2 <- detectnorm(m1i = m1,sd1i = sd1,n1i = n1,
-#'hi1i = hi1,lo1i = lo1,m2i = m2,sd2i = sd2,n2i = n2,
-#'hi2i = hi2,lo2i=lo2,distri = "beta", data = beta_mdat)
+#'ex2 <- meta2norm(m1 = m1,sd1 = sd1, hi1 = hi1, lo1 = lo1,
+#'m2 = m2, sd2 = sd2, hi2 = hi2, lo2 = lo2, distri = "beta",
+#'metadat = beta_mdat)
 #'head(ex2)
 #'mean(ex2$skew1)#sample skewness calculated from the sample
-#'mean(ex2$g1_skewness) #estimated using beta
+#'mean(ex2$g1skew) #estimated using beta
 #'@references
 #'\insertRef{barr1999mean}{detectnorm}
 #'
@@ -52,10 +51,10 @@
 #'
 #'\insertRef{sun2020influence}{detectnorm}
 #'
-detectnorm <- function(m1, m2,
+meta2norm <- function(m1, m2,
                        sd1, sd2,
                        hi1,hi2, lo1, lo2,
-                       cor_xy,
+                       cor_xy = NA,
                        distri = "beta",
                        design = "ind",
                        metadat = NULL,
@@ -146,8 +145,13 @@ detectnorm <- function(m1, m2,
     }
    final_dat <- data.frame(do.call(rbind, final_dat))
    colnames(final_dat) <- c("g1skew", "g1kurt", "g2skew", "g2kurt", "check_tail")
+   final_dat$g1skew <- as.numeric(final_dat$g1skew)
+   final_dat$g1kurt <- as.numeric(final_dat$g1kurt)
+   final_dat$g2skew <- as.numeric(final_dat$g2skew)
+   final_dat$g2kurt <- as.numeric(final_dat$g2kurt)
    final_dat <- cbind(metadat, final_dat)
    if(showFigure == TRUE) final_dat <- list(final_dat = final_dat, figure = figure)
   }
+
   return(final_dat)
 }

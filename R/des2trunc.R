@@ -22,16 +22,15 @@
 #'
 des2trunc <- function(vmean = vmean, vsd = vsd, lo = lo,
                         hi = hi,
-                        control = list(allowSingular = TRUE),
                         showFigure = FALSE,
                         ...){
 
   if(length(vmean) != length(vsd) & length(vsd) != 2)
     stop("Provide mean and sd for two dependent groups or for one group please use function `destrunc1`")
   g1 <- destrunc(vmean = vmean[[1]], vsd = vsd[[1]], lo = lo[[1]],
-                  hi = hi[[1]],  showFigure = FALSE)
+                  hi = hi[[1]],  showFigure = FALSE, ...)
   g2 <- destrunc(vmean = vmean[[2]], vsd = vsd[[2]], lo = lo[[2]],
-                  hi = hi[[2]], showFigure = FALSE)
+                  hi = hi[[2]], showFigure = FALSE, ...)
 
   result <- dat <- data.frame(g1pmean = g1$pmean, g1psd = g1$psd, g1tm = g1$tm,
                               g1tsd = g1$tsd ,g1skew = g1$skewness,g1kurt = g1$kurtosis,
@@ -45,10 +44,10 @@ des2trunc <- function(vmean = vmean, vsd = vsd, lo = lo,
     ymax_norm2 <- max(dnorm(x = seq(from = lo[[2]], to=hi[[2]],
                                     length.out = 1000),
                             mean = vmean[[2]], sd = vsd[[2]]))
-    ymax_trun1 <- max(dtruncnorm(x = seq(from = lo[[1]], to=hi[[1]],
+    ymax_trun1 <- max(truncnorm::dtruncnorm(x = seq(from = lo[[1]], to=hi[[1]],
                                            length.out = 1000),
                                    mean = result$g1mean, sd = result$g1sd))
-    ymax_trun2 <- max(dtruncnorm(x = seq(from = lo[[2]], to=hi[[2]],
+    ymax_trun2 <- max(truncnorm::dtruncnorm(x = seq(from = lo[[2]], to=hi[[2]],
                                            length.out = 1000),
                                  mean = result$g2mean, sd = result$g2sd))
     ymax <- max(ymax_norm1, ymax_norm2, ymax_trun1, ymax_trun2)
@@ -62,14 +61,14 @@ des2trunc <- function(vmean = vmean, vsd = vsd, lo = lo,
       #plot for first group
       stat_function(fun = dnorm, args = list(vmean[[1]], vsd[[1]]),
                     colour = "blue", na.rm = TRUE) +
-      stat_function(fun = dtruncnorm, args = list(a=lo[[1]], b=hi[[1]],
+      stat_function(fun = truncnorm::dtruncnorm, args = list(a=lo[[1]], b=hi[[1]],
                                                   mean=result$g1pmean,
                                                   sd=result$g1psd),
                     na.rm = TRUE, colour = "red")+
       #plot for second group
       stat_function(fun = dnorm, args = list(vmean[[2]], vsd[[2]]),
                     colour = "blue", linetype = 2, na.rm = TRUE)+
-      stat_function(fun = dtruncnorm, args = list(a=lo[[2]], b=hi[[2]],
+      stat_function(fun = truncnorm::dtruncnorm, args = list(a=lo[[2]], b=hi[[2]],
                                                   mean=result$g2pmean,
                                                   sd=result$g2psd),
                     na.rm = TRUE, linetype = 2, colour = "red")+
