@@ -1,66 +1,39 @@
-#' Calculate skewness and kurtosis based on truncated normal distribution in one group
+#' Estimate skewness and kurtosis based on truncated normal distribution in one sample
 #'
-#'This function can be used to calculate the skewness and kurtosis based on the truncated normal distribution. Also, it can be used to estimate the mean and variance of the parent distribution (the distribution before truncated).
-#'@param vmean sample mean of the truncated data
-#'@param vsd sample standard deviation of the truncated data
+#'This function can be used to calculate the skewness and kurtosis based on the truncated normal distribution.
+#'Also, this function estimate the mean and standard deviation of the parent distribution.
+#'
+#'@param vmean sample mean of the beta distributed data
+#'@param vsd sample standard deviation of the beta distributed data
 #'@param lo minimum possible value
 #'@param hi maximum possible value
-#'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal curve and the truncated normal curve.
-#'@param rawdata when raw data is available, we could still use it to check it figuratively, if the data was closed to the normal distribution, or truncated normal distribution.
-#'@param xstart see the package \code{\link[nleqslv]{nleqslv}}
-#'@param btol see the package \code{\link[nleqslv]{nleqslv}}
-#'@param ftol see the package \code{\link[nleqslv]{nleqslv}}
+#'@param showFigure when showFigure = TRUE, it will display the plots with theoretical normal and beta curves.
 #'@param ... other arguments
-#'@importFrom truncnorm dtruncnorm
 #'@import nleqslv
-#'@return If `showFigure = TRUE`, the output will be a list with two objects: one is the data frame of parent mean and standard deviation (pmean and psd), mean and standard deviation of truncated normal distribution (mean and sd), and skewness and kurtosis; the other is the theoretical figures of beta and normal distributions. If `showFigure = FALSE`, the output will be only the data frame.
 #'@export
 #'@examples
-#'data("trun_mdat")
-#'destrunc(vmean=trun_mdat$m2[6], vsd=trun_mdat$sd2[6],
-#'hi = 4, lo = 0, showFigure = TRUE)
-#'#example2
-#'destrunc(vmean=trun_mdat$m1[17], vsd=trun_mdat$sd1[17],
-#'hi = 4, lo = 0, showFigure = TRUE)
+#'data('trun_mdat')
+#'destrunc(vmean=trun_mdat$m2[8], vsd=trun_mdat$sd2[8],
+#'hi = trun_mdat$hi2[8], lo = trun_mdat$lo2[8])
 #'
-#'@seealso
-#'\code{\link{desbeta}}
+#'@seealso \code{\link{desbeta}}
 #'
-#'@references
-#'\insertRef{shah1966estimation}{detectnorm}
-#'
-#'\insertRef{robert1995simulation}{detectnorm}
-#'
-#'\insertRef{barr1999mean}{detectnorm}
 destrunc <- function(vmean,
-                     vsd,
-                     lo,
-                     hi,
-                     rawdata = NULL,
-                     showFigure = FALSE,
-                     xstart,
-                     btol,
-                     ftol,
-                     ...){
-  if(!is.null(rawdata)){
-    vmean <- mean(rawdata, is.na = TRUE)
-    print(paste("mean is ", vmean, sep=""))
-    vsd <- sd(rawdata)
-    print(paste("sd is ", vsd, sep=""))
-    if(missing(lo)){
-      lo <- min(rawdata)
-    }
-    if(missing(hi)){
-      hi <- max(rawdata)
-    }
-    print(paste("min. is ", lo, sep=""))
-    print(paste("max. is ", hi, sep=""))
-  }else{
-    vmean <- vmean
-    vsd <- vsd
-    hi <- hi
-    if(missing(lo)){lo <- 0} else{lo <- lo}
+                      vsd,
+                      lo,
+                      hi,
+                      rawdata = NULL,
+                      showFigure = FALSE,
+                      xstart = c(vmean, vsd),
+                      control = list(allowSingular = TRUE),
+                      ...){
+  if(is.null(rawdata) == FALSE){
+    vmean = mean(rawdata, ...)
+    vsd = sd(rawdata, ...)
+    lo = min(rawdata, ...)
+    hi = max(rawdata, ...)
   }
+  if(missing(lo)){lo <- 0} else{lo <- lo}
   if(vsd == 0){vsd <- .01}
   #To gain the mean and SD of the parent distribution
   model.x <- function(x){
@@ -75,19 +48,8 @@ destrunc <- function(vmean,
                         (pnorm(upper.std)-pnorm(lower.std)))^2) -vsd^2
     f
   }
-  if(missing(xstart)){
-    xstart <- c(vmean, vsd)
-  }
-  if(missing(btol)){
-    btol <- .000001
-  }
-  if(missing(ftol)){
-    ftol <- .000001
-  }
-  ans <- as.data.frame(nleqslv(xstart, model.x, method = "Newton",
-                               control = list(btol = btol,
-                                              ftol = ftol,
-                                              allowSingular = TRUE)))
+  ans <- as.data.frame(nleqslv(xstart, model.x,
+                               control = control))
   #if(ans$x[1]> vmean + 4*vsd | ans$x[1]<vmean - 4*vsd){warning("Mean of Parent distribution is out of 4sd range")}
   if(ans$x[2]<0){
     warning("SD of parent distribution is less than zero")
@@ -122,50 +84,29 @@ destrunc <- function(vmean,
   )/
     (1 + (h1l*d2l - h1u*d2u)/(p2u - p2l) - (d2l - d2u)^2/(p2u - p2l)^2)^2 -3
   result<- data.frame(pmean = ans$x[[1]], psd = ans$x[[2]],
-                      #pmean and psd is the population mean and sd of the parent distribution
+                     #pmean and psd is the population mean and sd of the parent distribution
                       tm = m1, tsd = sd1, skewness = skew, kurtosis = kurt)
 
   if (showFigure == TRUE) {
-    ynames <- paste("skew=", round(result$skew, 3),
-                    ",kurt=", round(result$kurt, 3),
-                    "; red-trunc; blue-normal",
-                    sep = "")
-    if(!is.null(rawdata)){
-      ynames <- paste(ynames, sep="")
-      fig <- ggplot2::ggplot(data.frame(x = rawdata),
-                    aes(x = rawdata)) +
-        geom_histogram(aes(y=..density..), colour = "black", fill = "white",
-                       bins = (hi - lo)-1, boundary = 0) +
-        geom_density(alpha = .2) +
-        stat_function(fun = dnorm, args = list(vmean, vsd),
-                      colour = "blue")+
-        stat_function(fun = dtruncnorm, args = list(a=lo, b=hi,
-                                                    mean=result$pmean,
-                                                    sd=result$psd),
-                      colour = "red")+
-        labs(title = ynames, y = "density", x = "x") +
-        theme(panel.background = element_rect(fill = "white",
-                                              colour = "grey50"),
-              legend.position = "bottom",
-              strip.background = element_rect(colour = "black",
-                                              fill = "white"))
-    } else{
-      fig <- ggplot2::ggplot(data.frame(x = c(lo, hi)), aes(x = x)) +
-        stat_function(fun = dnorm, args = list(vmean, vsd),
-                      colour = "blue")+
-        stat_function(fun = dtruncnorm, args = list(a=lo, b=hi,
-                                                    mean=result$pmean,
-                                                    sd=result$psd),
-                      colour = "red")+
-        labs(title = ynames, y = "density", x = "x") +
-        theme(panel.background = element_rect(fill = "white",
-                                              colour = "grey50"),
-              legend.position = "bottom",
-              strip.background = element_rect(colour = "black",
-                                              fill = "white"))
-    }
-
-    result <- list(dat = result, fig = fig)
+    ynames <- paste("skew =", round(result$skewness, 3), ", kurt =",
+                    round(result$kurtosis,3),
+                    " red-truncated; blue-normal" ,sep = "")
+    fig <- ggplot2::ggplot(data.frame(result)) +
+      stat_function(fun = dnorm, args = list(vmean, vsd),
+                    colour = "blue", na.rm = TRUE) +
+      stat_function(fun = dtruncnorm, args = list(a=lo, b=hi,
+                                                  mean=pmean,
+                                                  sd=psd),
+                    na.rm = TRUE, colour = "red")+
+      scale_y_continuous(limits = c(0, 1.2)) +
+      scale_x_continuous(limits = c(lo , hi)) +
+      labs(title = ynames, y = "density", x = "x") +
+      theme(panel.background = element_rect(fill = "white",
+                                            colour = "grey50"),
+            legend.position = "bottom",
+            strip.background = element_rect(colour = "black",
+                                            fill = "white"))
+   print(fig)
   }
   return(result)
 }
